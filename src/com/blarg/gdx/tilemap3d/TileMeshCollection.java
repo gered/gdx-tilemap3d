@@ -33,7 +33,7 @@ public class TileMeshCollection {
 
 	public int add(
 			Model model,
-			Map<String, TextureRegion> textures,
+			MaterialTileMapping textures,
 			byte opaqueSides,
 			byte lightValue,
 			boolean alpha,
@@ -51,7 +51,7 @@ public class TileMeshCollection {
 	public int add(
 			Model model,
 			Model collisionModel,
-			Map<String, TextureRegion> textures,
+			MaterialTileMapping textures,
 			byte opaqueSides,
 			byte lightValue,
 			boolean alpha,

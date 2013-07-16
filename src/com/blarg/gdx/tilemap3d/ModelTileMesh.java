@@ -48,7 +48,7 @@ public class ModelTileMesh extends TileMesh {
 
 	public ModelTileMesh(
 			Model model,
-			Map<String, TextureRegion> textures,
+			MaterialTileMapping textures,
 			byte opaqueSides,
 			byte lightValue,
 			boolean alpha,
@@ -65,7 +65,7 @@ public class ModelTileMesh extends TileMesh {
 	public ModelTileMesh(
 			Model model,
 			Model collisionModel,
-			Map<String, TextureRegion> textures,
+			MaterialTileMapping textures,
 			byte opaqueSides,
 			byte lightValue,
 			boolean alpha,
@@ -80,7 +80,7 @@ public class ModelTileMesh extends TileMesh {
 		setupCollisionVertices(collisionModel, scaleToSize, collisionPositionOffset);
 	}
 
-	private void setupMesh(Model model, Map<String, TextureRegion> textures, Vector3 scaleToSize, Vector3 positionOffset) {
+	private void setupMesh(Model model, MaterialTileMapping textures, Vector3 scaleToSize, Vector3 positionOffset) {
 		int numVertices = countModelVertices(model);
 		vertices = new Vertices(
 				numVertices,
@@ -98,12 +98,12 @@ public class ModelTileMesh extends TileMesh {
 			addModelNodeVertices(model.nodes.get(i), textures, tmpScaleFactor, positionOffset);
 	}
 
-	private void addModelNodeVertices(Node node, Map<String, TextureRegion> textures, Vector3 scaleFactor, Vector3 positionOffset) {
+	private void addModelNodeVertices(Node node, MaterialTileMapping textures, Vector3 scaleFactor, Vector3 positionOffset) {
 		final Matrix4 transform = node.globalTransform; // TODO: test that this is the right transform to use?
 
 		for (int i = 0; i < node.parts.size; ++i) {
 			NodePart nodePart = node.parts.get(i);
-			TextureRegion texture = textures.get(nodePart.material.id);
+			MaterialTileMapping.TileTexture texture = textures.get(nodePart.material.id);
 			MeshPart meshPart = nodePart.meshPart;
 			ShortBuffer indices = meshPart.mesh.getIndicesBuffer();
 			FloatBuffer vertices = meshPart.mesh.getVerticesBuffer();
@@ -139,8 +139,8 @@ public class ModelTileMesh extends TileMesh {
 				// TODO: better to throw exception (or check beforehand) if this is missing? setting zero's doesn't feel like the best solution
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.TextureCoordinates) != null) {
 					this.vertices.setUV(
-							TextureAtlas.scaleTexCoordU(vertices.get(offset), texture),
-							TextureAtlas.scaleTexCoordV(vertices.get(offset + 1), texture)
+							TextureAtlas.scaleTexCoordU(vertices.get(offset), texture.materialMinU, texture.materialMaxU, texture.region),
+							TextureAtlas.scaleTexCoordV(vertices.get(offset + 1), texture.materialMinV, texture.materialMaxV, texture.region)
 					);
 					offset += 3;
 				} else
