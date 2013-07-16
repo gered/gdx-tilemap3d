@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.graphics.TextureAtlas;
 import com.blarg.gdx.graphics.Vertices;
@@ -13,6 +14,7 @@ public class CubeTileMesh extends TileMesh {
 	static final Vector3 A = new Vector3(-0.5f, -0.5f, -0.5f);
 	static final Vector3 B = new Vector3(0.5f, 0.5f, 0.5f);
 
+	BoundingBox bounds;
 	Vertices vertices;
 	Vector3[] collisionVertices;
 
@@ -26,6 +28,11 @@ public class CubeTileMesh extends TileMesh {
 
 	public boolean hasFace(byte side) {
 		return Bitfield.isSet(side, faces);
+	}
+
+	@Override
+	public BoundingBox getBounds() {
+		return bounds;
 	}
 
 	@Override
@@ -92,6 +99,7 @@ public class CubeTileMesh extends TileMesh {
 
 		setupFaceVertices(numVertices, topTexture, bottomTexture, frontTexture, backTexture, leftTexture, rightTexture);
 		setupCollisionVertices();
+		bounds = new BoundingBox(TileMesh.UNIT_BOUNDS);
 	}
 
 	private void setupFaceVertices(

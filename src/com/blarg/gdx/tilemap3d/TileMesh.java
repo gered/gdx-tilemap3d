@@ -2,12 +2,15 @@ package com.blarg.gdx.tilemap3d;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Disposable;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.graphics.Vertices;
 
 public abstract class TileMesh implements Disposable {
 	public static final Vector3 OFFSET = new Vector3(0.5f, 0.5f, 0.5f);
+	public static final Vector3 UNIT_SIZE = new Vector3(1.0f, 1.0f, 1.0f);
+	public static final BoundingBox UNIT_BOUNDS = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
 
 	public static final byte SIDE_TOP = 1;
 	public static final byte SIDE_BOTTOM = 2;
@@ -25,6 +28,7 @@ public abstract class TileMesh implements Disposable {
 	public final byte lightValue;
 	public final Color color;
 
+	public abstract BoundingBox getBounds();
 	public abstract Vertices getVertices();
 	public abstract Vector3[] getCollisionVertices();
 

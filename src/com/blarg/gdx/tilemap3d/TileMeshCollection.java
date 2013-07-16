@@ -3,6 +3,7 @@ package com.blarg.gdx.tilemap3d;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.graphics.TextureAtlas;
@@ -30,13 +31,39 @@ public class TileMeshCollection {
 		return meshes.size - 1;
 	}
 
-	public int add(Model model, Map<String, TextureRegion> textures, byte opaqueSides, byte lightValue, boolean alpha, float translucency, Color color) {
-		ModelTileMesh tileMesh = new ModelTileMesh(model, textures, opaqueSides, lightValue, alpha, translucency, color);
+	public int add(
+			Model model,
+			Map<String, TextureRegion> textures,
+			byte opaqueSides,
+			byte lightValue,
+			boolean alpha,
+			float translucency,
+			Color color,
+			Vector3 scaleToSize,
+			Vector3 positionOffset
+	) {
+		ModelTileMesh tileMesh = new ModelTileMesh(
+				model, textures, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset
+		);
 		return addMesh(tileMesh);
 	}
 
-	public int add(Model model, Model collisionModel, Map<String, TextureRegion> textures, byte opaqueSides, byte lightValue, boolean alpha, float translucency, Color color) {
-		ModelTileMesh tileMesh = new ModelTileMesh(model, collisionModel, textures, opaqueSides, lightValue, alpha, translucency, color);
+	public int add(
+			Model model,
+			Model collisionModel,
+			Map<String, TextureRegion> textures,
+			byte opaqueSides,
+			byte lightValue,
+			boolean alpha,
+			float translucency,
+			Color color,
+	        Vector3 scaleToSize,
+	        Vector3 positionOffset,
+	        Vector3 collisionPositionOffset
+	) {
+		ModelTileMesh tileMesh = new ModelTileMesh(
+				model, collisionModel, textures, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset
+		);
 		return addMesh(tileMesh);
 	}
 
