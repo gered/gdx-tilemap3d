@@ -136,9 +136,9 @@ public class ChunkVertexGenerator {
 
 						if (visible) {
 							if (mesh.alpha)
-								addMesh(alphaBuilder, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getMesh().getNumVertices());
+								addMesh(alphaBuilder, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getVertices().count());
 							else
-								addMesh(builder, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getMesh().getNumVertices());
+								addMesh(builder, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getVertices().count());
 						}
 					}
 				}
@@ -168,17 +168,7 @@ public class ChunkVertexGenerator {
 	}
 
 	private void copyVertex(MeshBuilder builder, TileMesh sourceMesh, int sourceVertexIndex, Vector3 positionOffset, Matrix4 transform, Color color, TileChunk chunk) {
-		FloatBuffer buffer = sourceMesh.getMesh().getVerticesBuffer();
-		int strideInFloats = sourceMesh.getMesh().getVertexSize() / (Float.SIZE / 8);
-		int offset = (sourceVertexIndex * strideInFloats);
-
-		vertex.setPos(buffer.get(offset), buffer.get(offset + 1), buffer.get(offset + 2));
-		offset += 3;
-		vertex.setCol(buffer.get(offset), buffer.get(offset + 1), buffer.get(offset + 2), buffer.get(offset + 3));
-		offset += 4;
-		vertex.setNor(buffer.get(offset), buffer.get(offset + 1), buffer.get(offset + 2));
-		offset += 3;
-		vertex.setUV(buffer.get(offset), buffer.get(offset + 1));
+		sourceMesh.getVertices().getVertex(sourceVertexIndex, vertex);
 
 		// transform if applicable... (this will probably just be per-tile rotation)
 		if (transform != null) {

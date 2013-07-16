@@ -1,10 +1,10 @@
 package com.blarg.gdx.tilemap3d;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.blarg.gdx.Bitfield;
+import com.blarg.gdx.graphics.Vertices;
 
 public abstract class TileMesh implements Disposable {
 	public static final Vector3 OFFSET = new Vector3(0.5f, 0.5f, 0.5f);
@@ -25,7 +25,7 @@ public abstract class TileMesh implements Disposable {
 	public final byte lightValue;
 	public final Color color;
 
-	public abstract Mesh getMesh();
+	public abstract Vertices getVertices();
 	public abstract Vector3[] getCollisionVertices();
 
 	public boolean isCompletelyOpaque() {

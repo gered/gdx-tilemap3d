@@ -1,36 +1,34 @@
 package com.blarg.gdx.tilemap3d;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.model.NodePart;
-import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.blarg.gdx.graphics.TextureAtlas;
+import com.blarg.gdx.graphics.Vertices;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.Map;
 
 public class ModelTileMesh extends TileMesh {
-	final MeshPartBuilder.VertexInfo vertex = new MeshPartBuilder.VertexInfo();
 	final Vector3 tmpPosition = new Vector3();
 	final Vector3 tmpNormal = new Vector3();
 
-	Mesh mesh;
+	Vertices vertices;
 	Array<Vector3> collisionVertices;
 
 	@Override
-	public Mesh getMesh() {
-		return mesh;
+	public Vertices getVertices() {
+		return vertices;
 	}
 
 	@Override
@@ -51,21 +49,20 @@ public class ModelTileMesh extends TileMesh {
 	}
 
 	private void setupMesh(Model model, Map<String, TextureRegion> textures) {
-		MeshBuilder builder = new MeshBuilder();
-		builder.begin(
-				VertexAttributes.Usage.Position |
-				VertexAttributes.Usage.Color |
-				VertexAttributes.Usage.Normal |
-				VertexAttributes.Usage.TextureCoordinates
+		int numVertices = countModelVertices(model);
+		vertices = new Vertices(
+				numVertices,
+				VertexAttribute.Position(),
+				VertexAttribute.ColorUnpacked(),
+				VertexAttribute.Normal(),
+				VertexAttribute.TexCoords(0)
 		);
 
 		for (int i = 0; i < model.nodes.size; ++i)
-			addModelNodeVertices(model.nodes.get(i), builder, textures);
-
-		mesh = builder.end();
+			addModelNodeVertices(model.nodes.get(i), textures);
 	}
 
-	private void addModelNodeVertices(Node node, MeshBuilder builder, Map<String, TextureRegion> textures) {
+	private void addModelNodeVertices(Node node, Map<String, TextureRegion> textures) {
 		final Matrix4 transform = node.globalTransform; // TODO: test that this is the right transform to use?
 
 		for (int i = 0; i < node.parts.size; ++i) {
@@ -82,47 +79,44 @@ public class ModelTileMesh extends TileMesh {
 
 				tmpPosition.set(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2));
 				tmpPosition.mul(transform);
-				vertex.setPos(tmpPosition);
+				this.vertices.setPos(tmpPosition);
 				offset += 3;
 
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.Color) != null) {
-					vertex.setCol(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2), vertices.get(offset + 3));
+					this.vertices.setCol(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2), vertices.get(offset + 3));
 					offset += 4;
 				} else
-					vertex.setCol(Color.WHITE);
+					this.vertices.setCol(Color.WHITE);
 
 				// TODO: better to throw exception (or check beforehand) if this is missing? setting zero's doesn't feel like the best solution
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.Normal) != null) {
 					tmpNormal.set(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2));
 					tmpNormal.mul(transform);
-					vertex.setNor(tmpNormal);
+					this.vertices.setNor(tmpNormal);
 					offset += 3;
 				} else
-					vertex.setNor(Vector3.Zero);
+					this.vertices.setNor(Vector3.Zero);
 
 				// TODO: better to throw exception (or check beforehand) if this is missing? setting zero's doesn't feel like the best solution
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.TextureCoordinates) != null) {
-					vertex.setUV(
+					this.vertices.setUV(
 							TextureAtlas.scaleTexCoordU(vertices.get(offset), texture),
 							TextureAtlas.scaleTexCoordV(vertices.get(offset + 1), texture)
 					);
 					offset += 3;
 				} else
-					vertex.setUV(Vector2.Zero);
+					this.vertices.setUV(Vector2.Zero);
 
-				builder.vertex(vertex);
+				this.vertices.moveNext();
 			}
 		}
 
 		for (int i = 0; i < node.children.size; ++i)
-			addModelNodeVertices(node.children.get(i), builder, textures);
+			addModelNodeVertices(node.children.get(i), textures);
 	}
 
 	private void setupCollisionVertices(Model collisionModel) {
-		int numVertices = 0;
-		for (int i = 0; i < collisionModel.meshParts.size; ++i)
-			numVertices += collisionModel.meshParts.get(i).numVertices;
-
+		int numVertices = countModelVertices(collisionModel);
 		collisionVertices = new Array<Vector3>(true, numVertices, Vector3.class);
 		for (int i = 0; i < collisionModel.nodes.size; ++i)
 			addModelNodeCollisionVertices(collisionModel.nodes.get(i));
@@ -152,8 +146,14 @@ public class ModelTileMesh extends TileMesh {
 			addModelNodeCollisionVertices(node.children.get(i));
 	}
 
+	private int countModelVertices(Model model) {
+		int numVertices = 0;
+		for (int i = 0; i < model.meshParts.size; ++i)
+			numVertices += model.meshParts.get(i).numVertices;
+		return numVertices;
+	}
+
 	@Override
 	public void dispose() {
-		mesh.dispose();
 	}
 }
