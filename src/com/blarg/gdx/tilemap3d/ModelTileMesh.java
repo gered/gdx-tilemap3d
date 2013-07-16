@@ -121,10 +121,11 @@ public class ModelTileMesh extends TileMesh {
 				offset += 3;
 
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.Color) != null) {
+					// TODO: blend mesh color and source model color somehow?
 					this.vertices.setCol(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2), vertices.get(offset + 3));
 					offset += 4;
 				} else
-					this.vertices.setCol(Color.WHITE);
+					this.vertices.setCol(color);
 
 				// TODO: better to throw exception (or check beforehand) if this is missing? setting zero's doesn't feel like the best solution
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.Normal) != null) {
