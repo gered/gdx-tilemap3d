@@ -145,10 +145,8 @@ public class ChunkVertexGenerator {
 			}
 		}
 
-		chunk.mesh.mesh = builder.end();
-		chunk.mesh.meshPartSize = chunk.mesh.mesh.getNumVertices();
-		chunk.alphaMesh.mesh = alphaBuilder.end();
-		chunk.alphaMesh.meshPartSize = chunk.alphaMesh.mesh.getNumVertices();
+		chunk.mesh.setMesh(builder.end());
+		chunk.alphaMesh.setMesh(alphaBuilder.end());
 	}
 
 	private void addMesh(MeshBuilder builder, TileMesh sourceMesh, TileChunk chunk, TileCoord position, Matrix4 transform, Color color, int firstVertex, int numVertices) {

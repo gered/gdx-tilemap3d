@@ -12,13 +12,10 @@ public class TileMapRenderer {
 				for (int x = 0; x < tileMap.widthInChunks; ++x)
 				{
 					TileChunk chunk = tileMap.getChunk(x, y, z);
-					if (camera.frustum.boundsInFrustum(chunk.getBounds()))
-					{
-						if (chunk.mesh.mesh.getNumVertices() > 0)
-							modelBatch.render(chunk.mesh);
-						if (chunk.alphaMesh.mesh.getNumVertices() > 0)
-							modelBatch.render(chunk.alphaMesh);
-					}
+					if (chunk.mesh.mesh.getNumVertices() > 0 && camera.frustum.boundsInFrustum(chunk.mesh.bounds))
+						modelBatch.render(chunk.mesh);
+					if (chunk.alphaMesh.mesh.getNumVertices() > 0 && camera.frustum.boundsInFrustum(chunk.alphaMesh.bounds))
+						modelBatch.render(chunk.alphaMesh);
 				}
 			}
 		}
