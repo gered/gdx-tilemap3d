@@ -1,9 +1,8 @@
-package com.blarg.gdx.tilemap3d;
+package com.blarg.gdx.tilemap3d.tilemesh;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.VertexAttributes;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.graphics.g3d.model.Node;
@@ -19,7 +18,6 @@ import com.blarg.gdx.math.MathHelpers;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.Map;
 
 public class ModelTileMesh extends TileMesh {
 	static final Vector3 tmpPosition = new Vector3();

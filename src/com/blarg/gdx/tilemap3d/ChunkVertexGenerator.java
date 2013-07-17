@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-
-import java.nio.FloatBuffer;
+import com.blarg.gdx.tilemap3d.tilemesh.CubeTileMesh;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 
 public class ChunkVertexGenerator {
 	protected final MeshBuilder.VertexInfo vertex = new MeshPartBuilder.VertexInfo();

@@ -1,6 +1,7 @@
 package com.blarg.gdx.tilemap3d;
 
 import com.blarg.gdx.Bitfield;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 
 public class SimpleTileMapLighter implements TileMapLighter {
 	public SimpleTileMapLighter() {

@@ -1,4 +1,4 @@
-package com.blarg.gdx.tilemap3d;
+package com.blarg.gdx.tilemap3d.tilemesh;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttribute;

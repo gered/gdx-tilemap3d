@@ -1,4 +1,4 @@
-package com.blarg.gdx.tilemap3d;
+package com.blarg.gdx.tilemap3d.tilemesh;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -7,11 +7,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.graphics.TextureAtlas;
-
-import java.util.Map;
+import com.blarg.gdx.tilemap3d.Tile;
+import com.blarg.gdx.tilemap3d.tilemesh.CubeTileMesh;
+import com.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
+import com.blarg.gdx.tilemap3d.tilemesh.ModelTileMesh;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 
 public class TileMeshCollection {
-	TextureAtlas atlas;
+	public final TextureAtlas atlas;
 	Array<TileMesh> meshes;
 
 	public TileMeshCollection(TextureAtlas atlas) {
