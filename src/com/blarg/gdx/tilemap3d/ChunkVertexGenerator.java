@@ -150,7 +150,7 @@ public class ChunkVertexGenerator {
 		chunk.alphaMesh.setMesh(alphaBuilder.end());
 	}
 
-	private void addMesh(MeshBuilder builder, TileMesh sourceMesh, TileChunk chunk, TileCoord position, Matrix4 transform, Color color, int firstVertex, int numVertices) {
+	protected void addMesh(MeshBuilder builder, TileMesh sourceMesh, TileChunk chunk, TileCoord position, Matrix4 transform, Color color, int firstVertex, int numVertices) {
 		// adjust position by the tilemesh offset. TileMesh's are modeled using the
 		// origin (0,0,0) as the center and are 1 unit wide/deep/tall. So, their
 		// max extents are from -0.5,-0.5,-0.5 to 0.5,0.5,0.5. For rendering
@@ -171,7 +171,7 @@ public class ChunkVertexGenerator {
 		}
 	}
 
-	private void copyVertex(MeshBuilder builder, TileMesh sourceMesh, Vertices sourceVertices, Vector3 positionOffset, Matrix4 transform, Color color, TileChunk chunk) {
+	protected void copyVertex(MeshBuilder builder, TileMesh sourceMesh, Vertices sourceVertices, Vector3 positionOffset, Matrix4 transform, Color color, TileChunk chunk) {
 		sourceVertices.getVertex(vertex);
 
 		// transform if applicable... (this will probably just be per-tile rotation)
