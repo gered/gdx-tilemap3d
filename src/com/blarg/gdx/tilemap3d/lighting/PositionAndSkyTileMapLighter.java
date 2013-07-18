@@ -1,5 +1,8 @@
-package com.blarg.gdx.tilemap3d;
+package com.blarg.gdx.tilemap3d.lighting;
 
+import com.blarg.gdx.tilemap3d.Tile;
+import com.blarg.gdx.tilemap3d.TileMap;
+import com.blarg.gdx.tilemap3d.lighting.SimpleTileMapLighter;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 
 public class PositionAndSkyTileMapLighter extends SimpleTileMapLighter {

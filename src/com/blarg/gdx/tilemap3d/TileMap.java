@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Disposable;
 import com.blarg.gdx.math.IntersectionTester;
+import com.blarg.gdx.tilemap3d.lighting.TileMapLighter;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 
 public class TileMap extends TileContainer implements Disposable {
