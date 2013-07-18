@@ -32,6 +32,12 @@ public final class Tile {
 	public byte skyLight;
 	public int color;
 
+	// remaining padding bytes to keep total size as a multiple of 2
+	// TODO: use these for something useful!
+	public short padding1;
+	public short padding2;
+	public short padding3;
+
 	public Tile() {
 		tile = NO_TILE;
 	}
