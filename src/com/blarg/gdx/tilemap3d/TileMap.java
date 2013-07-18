@@ -27,6 +27,10 @@ public class TileMap extends TileContainer implements Disposable {
 	public byte ambientLightValue;
 	public byte skyLightValue;
 
+	public TileChunk[] getChunks() {
+		return chunks;
+	}
+
 	@Override
 	public int getWidth() {
 		return widthInChunks * chunkWidth;

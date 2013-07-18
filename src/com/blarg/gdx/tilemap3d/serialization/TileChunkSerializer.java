@@ -6,6 +6,8 @@ import com.blarg.gdx.tilemap3d.TileChunk;
 import java.nio.ByteBuffer;
 
 public class TileChunkSerializer {
+	public static final int TILE_SIZE_BYTES = 10;  // TODO: is there some kind of java sizeof() type thing?
+
 	public static void serialize(TileChunk chunk, ByteBuffer buffer) {
 		Tile[] tiles = chunk.getData();
 		for (int i = 0; i < tiles.length; ++i)
