@@ -6,6 +6,10 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class JsonTileDefinition {
+	public boolean cube;
+	public JsonCubeTextures textures;
+	public int texture;
+	public ArrayList<String> faces;
 	public String model;
 	public String collisionModel;
 	public String collisionShape;
