@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g3d.materials.Material;
 import com.badlogic.gdx.graphics.g3d.materials.TextureAttribute;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Disposable;
-import com.blarg.gdx.graphics.TextureAtlas;
+import com.blarg.gdx.graphics.atlas.TextureAtlas;
 
 public class TileChunkMesh extends Renderable implements Disposable {
 	public final BoundingBox bounds;

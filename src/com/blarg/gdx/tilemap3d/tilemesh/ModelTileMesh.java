@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
-import com.blarg.gdx.graphics.TextureAtlas;
+import com.blarg.gdx.graphics.atlas.TextureAtlas;
 import com.blarg.gdx.graphics.Vertices;
 import com.blarg.gdx.math.MathHelpers;
 

@@ -2,7 +2,7 @@ package com.blarg.gdx.tilemap3d.tilemesh;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.blarg.gdx.graphics.TextureAtlas;
+import com.blarg.gdx.graphics.atlas.TextureAtlas;
 
 import java.util.HashMap;
 import java.util.Map;

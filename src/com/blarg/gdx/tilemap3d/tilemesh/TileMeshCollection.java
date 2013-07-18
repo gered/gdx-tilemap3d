@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.blarg.gdx.Bitfield;
-import com.blarg.gdx.graphics.TextureAtlas;
+import com.blarg.gdx.graphics.atlas.TextureAtlas;
 import com.blarg.gdx.tilemap3d.Tile;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
