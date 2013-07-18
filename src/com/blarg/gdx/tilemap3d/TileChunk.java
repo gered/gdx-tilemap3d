@@ -109,8 +109,8 @@ public class TileChunk extends TileContainer implements Disposable {
 		for (int i = 0; i < numTiles; ++i)
 			data[i] = new Tile();
 
-		mesh = new TileChunkMesh(this);
-		alphaMesh = new TileChunkMesh(this);
+		mesh = new TileChunkMesh(this, false);
+		alphaMesh = new TileChunkMesh(this, true);
 	}
 
 	public void updateVertices(ChunkVertexGenerator generator) {
