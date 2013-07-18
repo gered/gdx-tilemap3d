@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.blarg.gdx.graphics.Vertices;
 import com.blarg.gdx.tilemap3d.tilemesh.CubeTileMesh;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 
@@ -160,13 +161,18 @@ public class ChunkVertexGenerator {
 		tmpOffset.y += (float)position.y;
 		tmpOffset.z += (float)position.z;
 
+		Vertices sourceVertices = sourceMesh.getVertices();
+		sourceVertices.moveTo(firstVertex);
+
 		// copy vertices
-		for (int i = 0, j = firstVertex; i < numVertices; ++i, ++j)
-			copyVertex(builder, sourceMesh, j, tmpOffset, transform, color, chunk);
+		for (int i = 0; i < numVertices; ++i) {
+			copyVertex(builder, sourceMesh, sourceVertices, tmpOffset, transform, color, chunk);
+			sourceVertices.moveNext();
+		}
 	}
 
-	private void copyVertex(MeshBuilder builder, TileMesh sourceMesh, int sourceVertexIndex, Vector3 positionOffset, Matrix4 transform, Color color, TileChunk chunk) {
-		sourceMesh.getVertices().getVertex(sourceVertexIndex, vertex);
+	private void copyVertex(MeshBuilder builder, TileMesh sourceMesh, Vertices sourceVertices, Vector3 positionOffset, Matrix4 transform, Color color, TileChunk chunk) {
+		sourceVertices.getVertex(vertex);
 
 		// transform if applicable... (this will probably just be per-tile rotation)
 		if (transform != null) {
