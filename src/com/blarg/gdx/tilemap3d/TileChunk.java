@@ -23,6 +23,10 @@ public class TileChunk extends TileContainer implements Disposable {
 	public TileChunkMesh alphaMesh;
 	public final TileMap tileMap;
 
+	public Tile[] getData() {
+		return data;
+	}
+
 	@Override
 	public int getWidth() {
 		return width;
