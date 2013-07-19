@@ -1,5 +1,6 @@
 package com.blarg.gdx.tilemap3d.serialization;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
@@ -12,6 +13,7 @@ import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class TileMapLoader {
 	public static TileMap load(FileHandle mapFile, TileMeshCollection tileMeshes) {
@@ -61,5 +63,41 @@ public class TileMapLoader {
 		}
 
 		return tileMap;
+	}
+
+	public static void save(TileMap tileMap, String outputFilename) {
+		if (tileMap == null)
+			throw new IllegalArgumentException();
+
+		JsonTileMap jsonMap = new JsonTileMap();
+		jsonMap.chunkWidth = tileMap.getChunks()[0].getWidth();
+		jsonMap.chunkHeight = tileMap.getChunks()[0].getHeight();
+		jsonMap.chunkDepth = tileMap.getChunks()[0].getDepth();
+		jsonMap.widthInChunks = tileMap.getWidth() / jsonMap.chunkWidth;
+		jsonMap.heightInChunks = tileMap.getWidth() / jsonMap.chunkHeight;
+		jsonMap.depthInChunks = tileMap.getWidth() / jsonMap.chunkDepth;
+
+		// TODO: figure out real lighting mode from the types of vertex generator / lighter objects set
+		jsonMap.lightingMode = null;
+
+		// each serialized chunk will be the same size in bytes (same number of tiles in each)
+		int chunkSizeInBytes = tileMap.getChunks()[0].getData().length * TileChunkSerializer.TILE_SIZE_BYTES;
+
+		jsonMap.chunks = new ArrayList<String>(tileMap.getChunks().length);
+		for (int i = 0; i < tileMap.getChunks().length; ++i) {
+			TileChunk chunk = tileMap.getChunks()[i];
+
+			byte[] chunkBytes = new byte[chunkSizeInBytes];
+			ByteBuffer buffer = ByteBuffer.wrap(chunkBytes);
+
+			TileChunkSerializer.serialize(chunk, buffer);
+
+			jsonMap.chunks.add(new String(Base64Coder.encode(chunkBytes)));
+		}
+
+		Json json = new Json();
+		String output = json.prettyPrint(jsonMap);
+		FileHandle outputFile = Gdx.files.local(outputFilename);
+		outputFile.writeString(output, false);
 	}
 }
