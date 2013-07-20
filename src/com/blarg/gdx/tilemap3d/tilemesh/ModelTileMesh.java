@@ -28,6 +28,9 @@ public class ModelTileMesh extends TileMesh {
 	BoundingBox bounds;
 	Vertices vertices;
 	Array<Vector3> collisionVertices;
+	Vector3 scaleToSize;
+	Vector3 positionOffset;
+	Vector3 collisionPositionOffset;
 
 	@Override
 	public BoundingBox getBounds() {
@@ -56,8 +59,9 @@ public class ModelTileMesh extends TileMesh {
 	        Vector3 positionOffset
 	) {
 		super(opaqueSides, alpha, translucency, lightValue, color);
-		setupMesh(model, textures, scaleToSize, positionOffset);
-		setupCollisionVertices(model, scaleToSize, positionOffset);
+		initScalingAndOffsetParams(scaleToSize, positionOffset, null);
+		setupMesh(model, textures);
+		setupCollisionVertices(model);
 	}
 
 	public ModelTileMesh(
@@ -74,11 +78,18 @@ public class ModelTileMesh extends TileMesh {
 	        Vector3 collisionPositionOffset
 	) {
 		super(opaqueSides, alpha, translucency, lightValue, color);
-		setupMesh(model, textures, scaleToSize, positionOffset);
-		setupCollisionVertices(collisionModel, scaleToSize, collisionPositionOffset);
+		initScalingAndOffsetParams(scaleToSize, positionOffset, collisionPositionOffset);
+		setupMesh(model, textures);
+		setupCollisionVertices(collisionModel);
 	}
 
-	private void setupMesh(Model model, MaterialTileMapping textures, Vector3 scaleToSize, Vector3 positionOffset) {
+	private void initScalingAndOffsetParams(Vector3 scaleToSize, Vector3 positionOffset, Vector3 collisionPositionOffset) {
+		this.scaleToSize = (scaleToSize == null ? null : new Vector3(scaleToSize));
+		this.positionOffset = (positionOffset == null ? new Vector3(Vector3.Zero) : new Vector3(positionOffset));
+		this.collisionPositionOffset = (collisionPositionOffset == null ? new Vector3(Vector3.Zero) : new Vector3(collisionPositionOffset));
+	}
+
+	private void setupMesh(Model model, MaterialTileMapping textures) {
 		int numVertices = countModelVertices(model);
 		vertices = new Vertices(
 				numVertices,
@@ -89,14 +100,20 @@ public class ModelTileMesh extends TileMesh {
 		);
 
 		model.getBoundingBox(tmpModelBounds);
-		MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
-		bounds = new BoundingBox().set(Vector3.Zero, scaleToSize);
+		if (scaleToSize != null) {
+			model.getBoundingBox(tmpModelBounds);
+			MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
+			bounds = new BoundingBox().set(Vector3.Zero, scaleToSize);
+		} else {
+			bounds = new BoundingBox().set(Vector3.Zero, tmpModelBounds.getDimensions());
+			tmpScaleFactor.set(1.0f, 1.0f, 1.0f);
+		}
 
 		for (int i = 0; i < model.nodes.size; ++i)
-			addModelNodeVertices(model.nodes.get(i), textures, tmpScaleFactor, positionOffset);
+			addModelNodeVertices(model.nodes.get(i), textures, tmpScaleFactor);
 	}
 
-	private void addModelNodeVertices(Node node, MaterialTileMapping textures, Vector3 scaleFactor, Vector3 positionOffset) {
+	private void addModelNodeVertices(Node node, MaterialTileMapping textures, Vector3 scaleFactor) {
 		final Matrix4 transform = node.globalTransform; // TODO: test that this is the right transform to use?
 
 		for (int i = 0; i < node.parts.size; ++i) {
@@ -149,20 +166,23 @@ public class ModelTileMesh extends TileMesh {
 		}
 
 		for (int i = 0; i < node.children.size; ++i)
-			addModelNodeVertices(node.children.get(i), textures, tmpScaleFactor, positionOffset);
+			addModelNodeVertices(node.children.get(i), textures, tmpScaleFactor);
 	}
 
-	private void setupCollisionVertices(Model collisionModel, Vector3 scaleToSize, Vector3 positionOffset) {
-		collisionModel.getBoundingBox(tmpModelBounds);
-		MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
+	private void setupCollisionVertices(Model collisionModel) {
+		if (scaleToSize != null) {
+			collisionModel.getBoundingBox(tmpModelBounds);
+			MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
+		} else
+			tmpScaleFactor.set(1.0f, 1.0f, 1.0f);
 
 		int numVertices = countModelVertices(collisionModel);
 		collisionVertices = new Array<Vector3>(true, numVertices, Vector3.class);
 		for (int i = 0; i < collisionModel.nodes.size; ++i)
-			addModelNodeCollisionVertices(collisionModel.nodes.get(i), tmpScaleFactor, positionOffset);
+			addModelNodeCollisionVertices(collisionModel.nodes.get(i), tmpScaleFactor);
 	}
 
-	private void addModelNodeCollisionVertices(Node node, Vector3 scaleFactor, Vector3 positionOffset) {
+	private void addModelNodeCollisionVertices(Node node, Vector3 scaleFactor) {
 		final Matrix4 transform = node.globalTransform; // TODO: test that this is the right transform to use?
 
 		for (int i = 0; i < node.parts.size; ++i) {
@@ -185,7 +205,7 @@ public class ModelTileMesh extends TileMesh {
 		}
 
 		for (int i = 0; i < node.children.size; ++i)
-			addModelNodeCollisionVertices(node.children.get(i), tmpScaleFactor, positionOffset);
+			addModelNodeCollisionVertices(node.children.get(i), tmpScaleFactor);
 	}
 
 	private int countModelVertices(Model model) {

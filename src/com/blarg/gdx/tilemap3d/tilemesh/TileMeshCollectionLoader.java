@@ -71,9 +71,9 @@ public final class TileMeshCollectionLoader {
 			boolean alpha;
 			float translucency;
 			Color color = new Color(Color.WHITE);
-			Vector3 scaleToSize = new Vector3(1.0f, 1.0f, 1.0f);
-			Vector3 positionOffset = new Vector3(0.0f, 0.0f, 0.0f);
-			Vector3 collisionPositionOffset = new Vector3(0.0f, 0.0f, 0.0f);
+			Vector3 scaleToSize = null;
+			Vector3 positionOffset = null;
+			Vector3 collisionPositionOffset = null;
 
 			if (tileDef.opaqueSides != null) {
 				if (tileDef.opaqueSides.contains("ALL"))
@@ -100,11 +100,11 @@ public final class TileMeshCollectionLoader {
 			if (tileDef.color != null)
 				color.set(tileDef.color);
 			if (tileDef.scaleToSize != null)
-				scaleToSize.set(tileDef.scaleToSize);
+				scaleToSize = new Vector3(tileDef.scaleToSize);
 			if (tileDef.positionOffset != null)
-				positionOffset.set(tileDef.positionOffset);
+				positionOffset = new Vector3(tileDef.positionOffset);
 			if (tileDef.collisionPositionOffset != null)
-				collisionPositionOffset.set(tileDef.collisionPositionOffset);
+				collisionPositionOffset = new Vector3(tileDef.collisionPositionOffset);
 
 			if (isCube) {
 				if (tileDef.textures != null) {
