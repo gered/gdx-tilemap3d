@@ -73,44 +73,44 @@ public class ChunkVertexGenerator {
 						if ((left == null || left.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(left).isOpaque(TileMesh.SIDE_RIGHT)) && cubeMesh.hasFace(TileMesh.SIDE_LEFT)) {
 							// left face is visible
 							if (cubeMesh.alpha)
-								addMesh(alphaBuilder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(alphaBuilder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 							else
-								addMesh(builder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(builder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 						}
 						if ((right == null || right.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(right).isOpaque(TileMesh.SIDE_LEFT)) && cubeMesh.hasFace(TileMesh.SIDE_RIGHT)) {
 							// right face is visible
 							if (cubeMesh.alpha)
-								addMesh(alphaBuilder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(alphaBuilder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 							else
-								addMesh(builder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(builder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 						}
 						if ((forward == null || forward.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(forward).isOpaque(TileMesh.SIDE_BACK)) && cubeMesh.hasFace(TileMesh.SIDE_FRONT)) {
 							// front face is visible
 							if (cubeMesh.alpha)
-								addMesh(alphaBuilder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(alphaBuilder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 							else
-								addMesh(builder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(builder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 						}
 						if ((backward == null || backward.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(backward).isOpaque(TileMesh.SIDE_FRONT)) && cubeMesh.hasFace(TileMesh.SIDE_BACK)) {
 							// back face is visible
 							if (cubeMesh.alpha)
-								addMesh(alphaBuilder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(alphaBuilder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 							else
-								addMesh(builder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(builder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 						}
 						if ((down == null || down.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(down).isOpaque(TileMesh.SIDE_TOP)) && cubeMesh.hasFace(TileMesh.SIDE_BOTTOM)) {
 							// bottom face is visible
 							if (cubeMesh.alpha)
-								addMesh(alphaBuilder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(alphaBuilder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 							else
-								addMesh(builder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(builder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 						}
 						if ((up == null || up.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(up).isOpaque(TileMesh.SIDE_BOTTOM)) && cubeMesh.hasFace(TileMesh.SIDE_TOP)) {
 							// top face is visible
 							if (cubeMesh.alpha)
-								addMesh(alphaBuilder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(alphaBuilder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 							else
-								addMesh(builder, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+								addMesh(builder, tile, cubeMesh, chunk, tmpPosition, transform, tmpColor, cubeMesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 						}
 					} else {
 						boolean visible = false;
@@ -126,20 +126,20 @@ public class ChunkVertexGenerator {
 
 						// null == empty space (off the edge of the entire map)
 						if (
-								(left == null || left.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(left).isOpaque(TileMesh.SIDE_RIGHT)) ||
-								(right == null || right.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(right).isOpaque(TileMesh.SIDE_LEFT)) ||
-								(forward == null || forward.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(forward).isOpaque(TileMesh.SIDE_BACK)) ||
-								(backward == null || backward.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(backward).isOpaque(TileMesh.SIDE_FRONT)) ||
-								(up == null || up.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(up).isOpaque(TileMesh.SIDE_BOTTOM)) ||
-								(down == null || down.tile == Tile.NO_TILE || !tileMap.tileMeshes.get(down).isOpaque(TileMesh.SIDE_TOP))
+								(left == null || left.isEmptySpace() || !tileMap.tileMeshes.get(left).isOpaque(TileMesh.SIDE_RIGHT)) ||
+								(right == null || right.isEmptySpace() || !tileMap.tileMeshes.get(right).isOpaque(TileMesh.SIDE_LEFT)) ||
+								(forward == null || forward.isEmptySpace() || !tileMap.tileMeshes.get(forward).isOpaque(TileMesh.SIDE_BACK)) ||
+								(backward == null || backward.isEmptySpace() || !tileMap.tileMeshes.get(backward).isOpaque(TileMesh.SIDE_FRONT)) ||
+								(up == null || up.isEmptySpace() || !tileMap.tileMeshes.get(up).isOpaque(TileMesh.SIDE_BOTTOM)) ||
+								(down == null || down.isEmptySpace() || !tileMap.tileMeshes.get(down).isOpaque(TileMesh.SIDE_TOP))
 						)
 							visible = true;
 
 						if (visible) {
 							if (mesh.alpha)
-								addMesh(alphaBuilder, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getVertices().count());
+								addMesh(alphaBuilder, tile, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getVertices().count());
 							else
-								addMesh(builder, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getVertices().count());
+								addMesh(builder, tile, mesh, chunk, tmpPosition, transform, tmpColor, 0, mesh.getVertices().count());
 						}
 					}
 				}
@@ -150,7 +150,7 @@ public class ChunkVertexGenerator {
 		chunk.alphaMesh.setMesh(alphaBuilder.end());
 	}
 
-	protected void addMesh(MeshBuilder builder, TileMesh sourceMesh, TileChunk chunk, TileCoord position, Matrix4 transform, Color color, int firstVertex, int numVertices) {
+	protected void addMesh(MeshBuilder builder, Tile tile, TileMesh sourceMesh, TileChunk chunk, TileCoord position, Matrix4 transform, Color color, int firstVertex, int numVertices) {
 		// adjust position by the tilemesh offset. TileMesh's are modeled using the
 		// origin (0,0,0) as the center and are 1 unit wide/deep/tall. So, their
 		// max extents are from -0.5,-0.5,-0.5 to 0.5,0.5,0.5. For rendering
