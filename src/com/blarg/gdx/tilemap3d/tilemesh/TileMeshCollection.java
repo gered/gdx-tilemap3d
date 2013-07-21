@@ -49,6 +49,28 @@ public class TileMeshCollection {
 		return addMesh(tileMesh);
 	}
 
+	public int add(
+			Model[] models,
+			Color[] modelColors,
+			Vector3[] scaleModelsToSizes,
+			Vector3[] modelPositionOffsets,
+			Model collisionModel,
+			MaterialTileMapping textures,
+			byte opaqueSides,
+			byte lightValue,
+			boolean alpha,
+			float translucency,
+			Color color,
+			Vector3 scaleToSize,
+			Vector3 positionOffset,
+			Vector3 collisionPositionOffset
+	) {
+		MultiModelTileMesh tileMesh = new MultiModelTileMesh(
+				models, modelColors, scaleModelsToSizes, modelPositionOffsets, collisionModel, textures, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset
+		);
+		return addMesh(tileMesh);
+	}
+
 	public int addCube(
 			TextureRegion topTexture,
 			TextureRegion bottomTexture,

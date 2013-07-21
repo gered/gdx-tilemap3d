@@ -171,6 +171,48 @@ public final class TileMeshCollectionLoader {
 				}
 
 				collection.add(model, collisionModel, materialMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
+
+			} else if (tileDef.models != null) {
+				int numModels = tileDef.models.size();
+				Model[] submodels = new Model[numModels];
+				Color[] colors = new Color[numModels];
+				Vector3[] scaleToSizes = new Vector3[numModels];
+				Vector3[] positionOffsets = new Vector3[numModels];
+
+				for (int j = 0; j < numModels; ++j) {
+					JsonTileSubModels subModelDef = tileDef.models.get(j);
+
+					submodels[j] = models.get(subModelDef.submodel);
+					if (model == null) {
+						submodels[j] = loader.loadModel(Gdx.files.internal(subModelDef.submodel));
+						models.put(subModelDef.submodel, submodels[j]);
+					}
+
+					if (subModelDef.color == null)
+						colors[j] = new Color(Color.WHITE);
+					else
+						colors[j] = new Color(subModelDef.color);
+
+					scaleToSizes[j] = subModelDef.scaleToSize;
+					positionOffsets[j] = subModelDef.positionOffset;
+				}
+
+				collisionModel = null;
+
+				if (tileDef.collisionModel != null) {
+					//override with a specific collision model
+					collisionModel = models.get(tileDef.collisionModel);
+					if (collisionModel == null) {
+						collisionModel = loader.loadModel(Gdx.files.internal(tileDef.collisionModel));
+						models.put(tileDef.collisionModel, collisionModel);
+					}
+				}
+				if (tileDef.collisionShape != null) {
+					collisionModel = null;   // using a shape instead!
+					throw new NotImplementedException();
+				}
+
+				collection.add(submodels, colors, scaleToSizes, positionOffsets, collisionModel, materialMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
 			}
 		}
 
