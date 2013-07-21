@@ -8,5 +8,4 @@ public class JsonTileSubModels {
 	public Color color;
 	public Vector3 scaleToSize;
 	public Vector3 positionOffset;
-	public Vector3 collisionPositionOffset;
 }
