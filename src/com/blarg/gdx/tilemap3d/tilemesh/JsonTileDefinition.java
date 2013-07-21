@@ -11,6 +11,7 @@ public class JsonTileDefinition {
 	public int texture;
 	public ArrayList<String> faces;
 	public String model;
+	public ArrayList<JsonTileSubModels> models;
 	public String collisionModel;
 	public String collisionShape;
 	public ArrayList<String> opaqueSides;

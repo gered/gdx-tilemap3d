@@ -48,8 +48,8 @@ public final class TileMeshCollectionLoader {
 		for (int i = 0; i < config.tiles.size(); ++i) {
 			JsonTileDefinition tileDef = config.tiles.get(i);
 
-			if (tileDef.cube && tileDef.model != null)
-				throw new RuntimeException("cube and model cannot both be set.");
+			if (!tileDef.cube && tileDef.model == null && tileDef.models == null)
+				throw new RuntimeException("One of cube, model, or models must be specified for each tile.");
 			if (tileDef.model != null && materialMapping == null)
 				throw new RuntimeException("Missing materials section but using models to define tiles.");
 			if (tileDef.collisionModel != null && tileDef.collisionShape != null)
@@ -64,7 +64,7 @@ public final class TileMeshCollectionLoader {
 			TextureRegion leftTexture = null;
 			TextureRegion rightTexture = null;
 			byte faces = 0;
-			Model model;
+			Model model = null;
 			Model collisionModel;
 			byte opaqueSides = 0;
 			byte lightValue;
@@ -148,7 +148,7 @@ public final class TileMeshCollectionLoader {
 				else
 					collection.addCube(topTexture, bottomTexture, frontTexture, backTexture, leftTexture, rightTexture, opaqueSides, lightValue, alpha, translucency, color);
 
-			} else {
+			} else if (tileDef.model != null) {
 				model = models.get(tileDef.model);
 				if (model == null) {
 					model = loader.loadModel(Gdx.files.internal(tileDef.model));
