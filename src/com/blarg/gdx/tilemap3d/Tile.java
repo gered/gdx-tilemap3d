@@ -118,7 +118,7 @@ public final class Tile {
 	}
 
 	public static byte adjustLightForTranslucency(byte light, float translucency) {
-		return (byte)Math.round((float)light * translucency);
+		return (byte)Math.round((float)light * (1.0f - translucency));
 	}
 
 	public static Matrix4 getTransformationFor(Tile tile) {
