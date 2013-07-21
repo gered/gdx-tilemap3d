@@ -166,23 +166,20 @@ public class ChunkVertexGenerator {
 
 		// copy vertices
 		for (int i = 0; i < numVertices; ++i) {
-			copyVertex(builder, sourceMesh, sourceVertices, tmpOffset, transform, color, chunk);
+			sourceVertices.getVertex(vertex);
+			vertex.color.set(color); // TODO: the getVertex() call above sets this, we're just overriding here... kind of wasteful .. ?
+
+			// transform if applicable... (this will probably just be per-tile rotation)
+			if (transform != null) {
+				vertex.position.mul(transform);
+				vertex.normal.mul(transform);
+			}
+
+			// translate vertex into "world/tilemap space"
+			vertex.position.add(tmpOffset);
+
+			builder.vertex(vertex);
 			sourceVertices.moveNext();
 		}
-	}
-
-	protected void copyVertex(MeshBuilder builder, TileMesh sourceMesh, Vertices sourceVertices, Vector3 positionOffset, Matrix4 transform, Color color, TileChunk chunk) {
-		sourceVertices.getVertex(vertex);
-
-		// transform if applicable... (this will probably just be per-tile rotation)
-		if (transform != null) {
-			vertex.position.mul(transform);
-			vertex.normal.mul(transform);
-		}
-
-		// translate vertex into "world/tilemap space"
-		vertex.position.add(positionOffset);
-
-		builder.vertex(vertex);
 	}
 }
