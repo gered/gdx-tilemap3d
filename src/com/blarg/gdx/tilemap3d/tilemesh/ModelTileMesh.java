@@ -49,23 +49,6 @@ public class ModelTileMesh extends TileMesh {
 
 	public ModelTileMesh(
 			Model model,
-			MaterialTileMapping textures,
-			byte opaqueSides,
-			byte lightValue,
-			boolean alpha,
-			float translucency,
-			Color color,
-			Vector3 scaleToSize,
-	        Vector3 positionOffset
-	) {
-		super(opaqueSides, alpha, translucency, lightValue, color);
-		initScalingAndOffsetParams(scaleToSize, positionOffset, null);
-		setupMesh(model, textures);
-		setupCollisionVertices(model);
-	}
-
-	public ModelTileMesh(
-			Model model,
 			Model collisionModel,
 			MaterialTileMapping textures,
 			byte opaqueSides,

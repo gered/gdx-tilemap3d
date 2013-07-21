@@ -32,23 +32,6 @@ public class TileMeshCollection {
 
 	public int add(
 			Model model,
-			MaterialTileMapping textures,
-			byte opaqueSides,
-			byte lightValue,
-			boolean alpha,
-			float translucency,
-			Color color,
-			Vector3 scaleToSize,
-			Vector3 positionOffset
-	) {
-		ModelTileMesh tileMesh = new ModelTileMesh(
-				model, textures, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset
-		);
-		return addMesh(tileMesh);
-	}
-
-	public int add(
-			Model model,
 			Model collisionModel,
 			MaterialTileMapping textures,
 			byte opaqueSides,
