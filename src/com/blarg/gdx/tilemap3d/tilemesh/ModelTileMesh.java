@@ -145,7 +145,7 @@ public class ModelTileMesh extends TileMesh {
 				// TODO: better to throw exception (or check beforehand) if this is missing? setting zero's doesn't feel like the best solution
 				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.Normal) != null) {
 					tmpNormal.set(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2))
-					         .mul(transform);
+					         .rot(transform);
 					this.vertices.setNor(tmpNormal);
 					offset += 3;
 				} else

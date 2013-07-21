@@ -172,7 +172,7 @@ public class ChunkVertexGenerator {
 			// transform if applicable... (this will probably just be per-tile rotation)
 			if (transform != null) {
 				vertex.position.mul(transform);
-				vertex.normal.mul(transform);
+				vertex.normal.rot(transform);
 			}
 
 			// translate vertex into "world/tilemap space"
