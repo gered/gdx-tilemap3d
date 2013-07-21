@@ -115,7 +115,25 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 		}
 
 		// final scaling and offsets by the overall model scale/offsets (if provided)
-		// TODO
+
+		// figure out what the final scaled bounds and scale factor will be
+		Vector3 scaleFactor = new Vector3();
+		if (scaleToSize != null) {
+			MathHelpers.getScaleFactor(bounds.getDimensions(), scaleToSize, scaleFactor);
+			bounds = new BoundingBox().set(Vector3.Zero, scaleToSize);
+		} else {
+			bounds = new BoundingBox().set(Vector3.Zero, bounds.getDimensions());
+			scaleFactor.set(1.0f, 1.0f, 1.0f);
+		}
+
+		// now apply the scale factor and offset to each vertex
+		Vector3 position = new Vector3();
+		for (int i = 0; i < vertices.count(); ++i) {
+			vertices.getPos(i, position);
+			position.add(positionOffset)
+					.scl(scaleFactor);
+			vertices.setPos(i, position);
+		}
 	}
 
 	private void setupCollisionVertices(Model collisionModel) {
