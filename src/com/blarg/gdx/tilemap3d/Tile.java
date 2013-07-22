@@ -42,24 +42,24 @@ public final class Tile {
 		tile = NO_TILE;
 	}
 
-	public Tile set(short tileIndex) {
-		this.tile = tileIndex;
+	public Tile set(int tileIndex) {
+		this.tile = (short)tileIndex;
 		return this;
 	}
 
-	public Tile set(short tileIndex, short flags) {
-		this.tile = tileIndex;
+	public Tile set(int tileIndex, short flags) {
+		this.tile = (short)tileIndex;
 		this.flags = flags;
 		return this;
 	}
 
-	public Tile set(short tileIndex, short flags, final Color color) {
+	public Tile set(int tileIndex, short flags, final Color color) {
 		return set(tileIndex, flags, color.toIntBits());
 	}
 
-	public Tile set(short tileIndex, short flags, int color) {
+	public Tile set(int tileIndex, short flags, int color) {
 		flags = Bitfield.set(FLAG_CUSTOM_COLOR, flags);
-		this.tile = tileIndex;
+		this.tile = (short)tileIndex;
 		this.flags = flags;
 		this.color = color;
 		return this;
