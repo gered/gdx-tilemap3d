@@ -65,6 +65,15 @@ public final class Tile {
 		return this;
 	}
 
+	public Tile set(Tile other) {
+		this.tile = other.tile;
+		this.flags = other.flags;
+		this.tileLight = other.tileLight;
+		this.skyLight = other.skyLight;
+		this.color = other.color;
+		return this;
+	}
+
 	public Tile setCustomColor(final Color color) {
 		return setCustomColor(color.toIntBits());
 	}
