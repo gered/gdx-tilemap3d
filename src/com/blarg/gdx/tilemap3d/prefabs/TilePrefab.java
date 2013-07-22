@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.blarg.gdx.tilemap3d.Tile;
 import com.blarg.gdx.tilemap3d.TileContainer;
 
-public class TilePrefab {
+public class TilePrefab extends TileContainer {
 	public enum Rotation {
 		ROT0(0),
 		ROT90(90),
@@ -42,21 +42,60 @@ public class TilePrefab {
 	final BoundingBox rotationBounds = new BoundingBox();
 	final BoundingBox tmpRotationBounds = new BoundingBox();
 
+	@Override
 	public int getWidth() {
 		return width;
 	}
 
+	@Override
 	public int getHeight() {
 		return height;
 	}
 
+	@Override
 	public int getDepth() {
 		return depth;
 	}
 
+	@Override
+	public int getMinX() {
+		return 0;
+	}
+
+	@Override
+	public int getMinY() {
+		return 0;
+	}
+
+	@Override
+	public int getMinZ() {
+		return 0;
+	}
+
+	@Override
+	public int getMaxX() {
+		return width - 1;
+	}
+
+	@Override
+	public int getMaxY() {
+		return height - 1;
+	}
+
+	@Override
+	public int getMaxZ() {
+		return depth - 1;
+	}
+
+	@Override
 	public BoundingBox getBounds() {
 		tmpBounds.set(bounds);
 		return tmpBounds;
+	}
+
+	@Override
+	public Vector3 getPosition() {
+		return null;
 	}
 
 	public Rotation getRotation() {
@@ -96,9 +135,18 @@ public class TilePrefab {
 		rotate(Rotation.ROT0);
 	}
 
+	@Override
 	public Tile get(int x, int y, int z) {
 		int index = getIndexOf(x, y, z);
 		return data[index];
+	}
+
+	@Override
+	public Tile getSafe(int x, int y, int z) {
+		if (!isWithinLocalBounds(x, y, z))
+			return null;
+		else
+			return get(x, y, z);
 	}
 
 	public void rotate(Rotation rotation) {
