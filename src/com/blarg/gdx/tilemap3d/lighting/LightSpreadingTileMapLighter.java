@@ -2,37 +2,20 @@ package com.blarg.gdx.tilemap3d.lighting;
 
 import com.blarg.gdx.tilemap3d.Tile;
 import com.blarg.gdx.tilemap3d.TileMap;
-import com.blarg.gdx.tilemap3d.lighting.SimpleTileMapLighter;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 
-public class PositionAndSkyTileMapLighter extends SimpleTileMapLighter {
-	public PositionAndSkyTileMapLighter() {
+public class LightSpreadingTileMapLighter extends BaseTileMapLighter {
+	private boolean doSkyLight;
+	private boolean doTileLight;
+
+	public LightSpreadingTileMapLighter(boolean doSkyLight, boolean doTileLight) {
+		this.doSkyLight = doSkyLight;
+		this.doTileLight = doTileLight;
 	}
 
-	private void applyLighting(TileMap tileMap) {
-		// for each light source (sky or not), recursively go through and set
-		// appropriate lighting for each adjacent tile
-		for (int y = 0; y < tileMap.getHeight(); ++y)
-		{
-			for (int z = 0; z < tileMap.getDepth(); ++z)
-			{
-				for (int x = 0; x < tileMap.getWidth(); ++x)
-				{
-					Tile tile = tileMap.get(x, y, z);
-					if (tile.isEmptySpace())
-					{
-						if (tile.isSkyLit())
-							spreadSkyLight(x, y, z, tile, tile.skyLight, tileMap);
-					}
-					else
-					{
-						TileMesh mesh = tileMap.tileMeshes.get(tile);
-						if (mesh.isLightSource())
-							spreadTileLight(x, y, z, tile, mesh.lightValue, tileMap);
-					}
-				}
-			}
-		}	}
+	public LightSpreadingTileMapLighter() {
+		this(true, true);
+	}
 
 	private void spreadSkyLight(int x, int y, int z, Tile tile, byte light, TileMap tileMap) {
 		if (light > 0)
@@ -153,7 +136,33 @@ public class PositionAndSkyTileMapLighter extends SimpleTileMapLighter {
 	@Override
 	public void light(TileMap tileMap) {
 		resetLightValues(tileMap);
-		applySkyLight(tileMap);
-		applyLighting(tileMap);
-	}
+
+		if (doSkyLight)
+			castSkyLightDown(tileMap);
+
+		// for each light source (sky or not), recursively go through and set
+		// appropriate lighting for each adjacent tile
+		for (int y = 0; y < tileMap.getHeight(); ++y)
+		{
+			for (int z = 0; z < tileMap.getDepth(); ++z)
+			{
+				for (int x = 0; x < tileMap.getWidth(); ++x)
+				{
+					Tile tile = tileMap.get(x, y, z);
+					if (tile.isEmptySpace())
+					{
+						if (doSkyLight && tile.isSkyLit())
+							spreadSkyLight(x, y, z, tile, tile.skyLight, tileMap);
+					}
+					else
+					{
+						if (doTileLight) {
+							TileMesh mesh = tileMap.tileMeshes.get(tile);
+							if (mesh.isLightSource())
+								spreadTileLight(x, y, z, tile, mesh.lightValue, tileMap);
+						}
+					}
+				}
+			}
+		}	}
 }
