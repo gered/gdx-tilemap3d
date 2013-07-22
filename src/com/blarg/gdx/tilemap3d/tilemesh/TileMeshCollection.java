@@ -13,6 +13,10 @@ public class TileMeshCollection {
 	public final TextureAtlas atlas;
 	Array<TileMesh> meshes;
 
+	public int count() {
+		return meshes.size;
+	}
+
 	public TileMeshCollection(TextureAtlas atlas) {
 		if (atlas == null)
 			throw new IllegalArgumentException();
