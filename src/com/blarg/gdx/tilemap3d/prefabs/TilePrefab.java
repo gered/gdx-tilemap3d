@@ -2,6 +2,7 @@ package com.blarg.gdx.tilemap3d.prefabs;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.tilemap3d.Tile;
 import com.blarg.gdx.tilemap3d.TileContainer;
 
@@ -232,6 +233,18 @@ public class TilePrefab extends TileContainer {
 					Tile sourceTile = getWithRotation(x, y, z);
 					if (!copyEmptyTiles && sourceTile.isEmptySpace())
 						continue;
+
+					if (Bitfield.isSet(Tile.FLAG_FACE_NORTH, sourceTile.flags) ||
+							Bitfield.isSet(Tile.FLAG_FACE_EAST, sourceTile.flags) ||
+							Bitfield.isSet(Tile.FLAG_FACE_SOUTH, sourceTile.flags) ||
+							Bitfield.isSet(Tile.FLAG_FACE_WEST, sourceTile.flags)) {
+						if (rotation.equals(Rotation.ROT90))
+							sourceTile.rotateClockwise();
+						else if (rotation.equals(Rotation.ROT180))
+							sourceTile.rotateClockwise().rotateClockwise();
+						else if (rotation.equals(Rotation.ROT270))
+							sourceTile.rotateClockwise().rotateClockwise().rotateClockwise();
+					}
 
 					Tile destTile = destination.get(minX + x, minY + y, minZ + z);
 					destTile.set(sourceTile);
