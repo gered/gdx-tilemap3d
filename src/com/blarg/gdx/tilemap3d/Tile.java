@@ -117,6 +117,53 @@ public final class Tile {
 		return Bitfield.isSet(FLAG_LIGHT_SKY, flags);
 	}
 
+	public Tile rotateClockwise() {
+		if (Bitfield.isSet(FLAG_FACE_NORTH, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_NORTH, flags);
+			flags = Bitfield.set(FLAG_FACE_WEST, flags);
+		} else if (Bitfield.isSet(FLAG_FACE_WEST, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_WEST, flags);
+			flags = Bitfield.set(FLAG_FACE_SOUTH, flags);
+		} else if (Bitfield.isSet(FLAG_FACE_SOUTH, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_SOUTH, flags);
+			flags = Bitfield.set(FLAG_FACE_EAST, flags);
+		} else if (Bitfield.isSet(FLAG_FACE_EAST, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_EAST, flags);
+			flags = Bitfield.set(FLAG_FACE_NORTH, flags);
+		}
+		return this;
+	}
+
+	public Tile rotateCounterClockwise() {
+		if (Bitfield.isSet(FLAG_FACE_NORTH, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_NORTH, flags);
+			flags = Bitfield.set(FLAG_FACE_EAST, flags);
+		} else if (Bitfield.isSet(FLAG_FACE_EAST, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_EAST, flags);
+			flags = Bitfield.set(FLAG_FACE_SOUTH, flags);
+		} else if (Bitfield.isSet(FLAG_FACE_SOUTH, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_SOUTH, flags);
+			flags = Bitfield.set(FLAG_FACE_WEST, flags);
+		} else if (Bitfield.isSet(FLAG_FACE_WEST, flags)) {
+			flags = Bitfield.clear(FLAG_FACE_WEST, flags);
+			flags = Bitfield.set(FLAG_FACE_NORTH, flags);
+		}
+		return this;
+	}
+
+	public float getRotationAngle() {
+		if (Bitfield.isSet(FLAG_FACE_NORTH, flags))
+			return 0.0f;
+		else if (Bitfield.isSet(FLAG_FACE_EAST, flags))
+			return 90.0f;
+		else if (Bitfield.isSet(FLAG_FACE_SOUTH, flags))
+			return 180.0f;
+		else if (Bitfield.isSet(FLAG_FACE_WEST, flags))
+			return 270.0f;
+		else
+			return 0.0f;
+	}
+
 	public static float getBrightness(byte light) {
 		// this is a copy of the brightness formula listed here:
 		// http://gamedev.stackexchange.com/a/21247
