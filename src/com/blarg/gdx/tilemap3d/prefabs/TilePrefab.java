@@ -234,20 +234,13 @@ public class TilePrefab extends TileContainer {
 					if (!copyEmptyTiles && sourceTile.isEmptySpace())
 						continue;
 
-					if (Bitfield.isSet(Tile.FLAG_FACE_NORTH, sourceTile.flags) ||
-							Bitfield.isSet(Tile.FLAG_FACE_EAST, sourceTile.flags) ||
-							Bitfield.isSet(Tile.FLAG_FACE_SOUTH, sourceTile.flags) ||
-							Bitfield.isSet(Tile.FLAG_FACE_WEST, sourceTile.flags)) {
-						if (rotation.equals(Rotation.ROT90))
-							sourceTile.rotateClockwise();
-						else if (rotation.equals(Rotation.ROT180))
-							sourceTile.rotateClockwise().rotateClockwise();
-						else if (rotation.equals(Rotation.ROT270))
-							sourceTile.rotateClockwise().rotateClockwise().rotateClockwise();
-					}
-
+					// copy it right away, any modifications that we need to do as part of this copy
+					// should only be done against destTile (leave the source data intact! herp derp, references!)
 					Tile destTile = destination.get(minX + x, minY + y, minZ + z);
 					destTile.set(sourceTile);
+
+					if (destTile.isRotated())
+						destTile.rotateClockwise(rotation.value / 90);
 				}
 			}
 		}
