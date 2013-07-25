@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.blarg.gdx.Bitfield;
+import com.blarg.gdx.math.MathHelpers;
 
 public final class Tile {
 	static final Matrix4 faceNorthRotation = new Matrix4().setToRotation(Vector3.Y, 0.0f);
@@ -11,32 +12,34 @@ public final class Tile {
 	static final Matrix4 faceSouthRotation = new Matrix4().setToRotation(Vector3.Y, 180.0f);
 	static final Matrix4 faceWestRotation = new Matrix4().setToRotation(Vector3.Y, 270.0f);
 
+	public static final byte ROTATION_0 = 0;
+	public static final byte ROTATION_90 = 1;
+	public static final byte ROTATION_180 = 2;
+	public static final byte ROTATION_270 = 3;
+
 	public static final short NO_TILE = 0;
 
 	public static final byte LIGHT_VALUE_MAX = 15;
 	public static final byte LIGHT_VALUE_SKY = LIGHT_VALUE_MAX;
 
 	public static final short FLAG_COLLIDEABLE = 1;
-	public static final short FLAG_FACE_NORTH = 2;
-	public static final short FLAG_FACE_EAST = 4;
-	public static final short FLAG_FACE_SOUTH = 8;
-	public static final short FLAG_FACE_WEST = 16;
-	public static final short FLAG_CUSTOM_COLOR = 32;
-	public static final short FLAG_FRICTION_SLIPPERY = 64;
-	public static final short FLAG_LIGHT_SKY = 128;
-	public static final short FLAG_WALKABLE_SURFACE = 256;
+	public static final short FLAG_ROTATED = 2;
+	public static final short FLAG_LARGE_TILE = 4;
+	public static final short FLAG_LARGE_TILE_OWNER = 8;
+	public static final short FLAG_CUSTOM_COLOR = 16;
+	public static final short FLAG_FRICTION_SLIPPERY = 32;
+	public static final short FLAG_LIGHT_SKY = 64;
+	public static final short FLAG_WALKABLE_SURFACE = 128;
 
 	public short tile;
 	public short flags;
 	public byte tileLight;
 	public byte skyLight;
+	public byte rotation;
+	public byte parentTileOffsetX;
+	public byte parentTileOffsetY;
+	public byte parentTileOffsetZ;
 	public int color;
-
-	// remaining padding bytes to keep total size as a multiple of 2
-	// TODO: use these for something useful!
-	public short padding1;
-	public short padding2;
-	public short padding3;
 
 	public Tile() {
 		tile = NO_TILE;
@@ -70,6 +73,10 @@ public final class Tile {
 		this.flags = other.flags;
 		this.tileLight = other.tileLight;
 		this.skyLight = other.skyLight;
+		this.rotation = other.rotation;
+		this.parentTileOffsetX = other.parentTileOffsetX;
+		this.parentTileOffsetY = other.parentTileOffsetY;
+		this.parentTileOffsetZ = other.parentTileOffsetZ;
 		this.color = other.color;
 		return this;
 	}
@@ -117,51 +124,59 @@ public final class Tile {
 		return Bitfield.isSet(FLAG_LIGHT_SKY, flags);
 	}
 
+	public boolean isRotated() {
+		return Bitfield.isSet(FLAG_ROTATED, flags);
+	}
+
+	public boolean isLargeTile() {
+		return Bitfield.isSet(FLAG_LARGE_TILE, flags);
+	}
+
+	public boolean isLargeTileRoot() {
+		return Bitfield.isSet(FLAG_LARGE_TILE_OWNER, flags);
+	}
+
+	public Tile rotate(byte facingDirection) {
+		if (facingDirection < 0 || facingDirection > 3)
+			throw new RuntimeException("Use one of the ROTATION_X constants.");
+		flags = Bitfield.set(FLAG_ROTATED, flags);
+		rotation = facingDirection;
+		return this;
+	}
+
 	public Tile rotateClockwise() {
-		if (Bitfield.isSet(FLAG_FACE_NORTH, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_NORTH, flags);
-			flags = Bitfield.set(FLAG_FACE_WEST, flags);
-		} else if (Bitfield.isSet(FLAG_FACE_WEST, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_WEST, flags);
-			flags = Bitfield.set(FLAG_FACE_SOUTH, flags);
-		} else if (Bitfield.isSet(FLAG_FACE_SOUTH, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_SOUTH, flags);
-			flags = Bitfield.set(FLAG_FACE_EAST, flags);
-		} else if (Bitfield.isSet(FLAG_FACE_EAST, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_EAST, flags);
-			flags = Bitfield.set(FLAG_FACE_NORTH, flags);
-		}
+		flags = Bitfield.set(FLAG_ROTATED, flags);
+		rotation -= 1;
+		if (rotation < ROTATION_0)
+			rotation = ROTATION_270;
+		return this;
+	}
+
+	public Tile rotateClockwise(int times) {
+		flags = Bitfield.set(FLAG_ROTATED, flags);
+		rotation = (byte)MathHelpers.rolloverClamp((int)(rotation -= times), (int)ROTATION_0, (int)ROTATION_270 + 1);
 		return this;
 	}
 
 	public Tile rotateCounterClockwise() {
-		if (Bitfield.isSet(FLAG_FACE_NORTH, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_NORTH, flags);
-			flags = Bitfield.set(FLAG_FACE_EAST, flags);
-		} else if (Bitfield.isSet(FLAG_FACE_EAST, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_EAST, flags);
-			flags = Bitfield.set(FLAG_FACE_SOUTH, flags);
-		} else if (Bitfield.isSet(FLAG_FACE_SOUTH, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_SOUTH, flags);
-			flags = Bitfield.set(FLAG_FACE_WEST, flags);
-		} else if (Bitfield.isSet(FLAG_FACE_WEST, flags)) {
-			flags = Bitfield.clear(FLAG_FACE_WEST, flags);
-			flags = Bitfield.set(FLAG_FACE_NORTH, flags);
-		}
+		flags = Bitfield.set(FLAG_ROTATED, flags);
+		rotation += 1;
+		if (rotation > ROTATION_270)
+			rotation = ROTATION_0;
+		return this;
+	}
+
+	public Tile rotateCounterClockwise(int times) {
+		flags = Bitfield.set(FLAG_ROTATED, flags);
+		rotation = (byte)MathHelpers.rolloverClamp((int)(rotation += times), (int)ROTATION_0, (int)ROTATION_270 + 1);
 		return this;
 	}
 
 	public float getRotationAngle() {
-		if (Bitfield.isSet(FLAG_FACE_NORTH, flags))
+		if (rotation < 0 || rotation > 3)
 			return 0.0f;
-		else if (Bitfield.isSet(FLAG_FACE_EAST, flags))
-			return 90.0f;
-		else if (Bitfield.isSet(FLAG_FACE_SOUTH, flags))
-			return 180.0f;
-		else if (Bitfield.isSet(FLAG_FACE_WEST, flags))
-			return 270.0f;
 		else
-			return 0.0f;
+			return rotation * 90.0f;
 	}
 
 	public static float getBrightness(byte light) {
@@ -178,15 +193,14 @@ public final class Tile {
 	}
 
 	public static Matrix4 getTransformationFor(Tile tile) {
-		if (Bitfield.isSet(FLAG_FACE_NORTH, tile.flags))
-			return faceNorthRotation;
-		else if (Bitfield.isSet(FLAG_FACE_EAST, tile.flags))
-			return faceEastRotation;
-		else if (Bitfield.isSet(FLAG_FACE_SOUTH, tile.flags))
-			return faceSouthRotation;
-		else if (Bitfield.isSet(FLAG_FACE_WEST, tile.flags))
-			return faceWestRotation;
-		else
+		if (!tile.isRotated())
 			return null;
+		switch (tile.rotation) {
+			case 0: return faceNorthRotation;
+			case 1: return faceEastRotation;
+			case 2: return faceSouthRotation;
+			case 3: return faceWestRotation;
+			default: return null;
+		}
 	}
 }
