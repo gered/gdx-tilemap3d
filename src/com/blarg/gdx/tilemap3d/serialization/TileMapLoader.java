@@ -74,8 +74,8 @@ public class TileMapLoader {
 		jsonMap.chunkHeight = tileMap.getChunks()[0].getHeight();
 		jsonMap.chunkDepth = tileMap.getChunks()[0].getDepth();
 		jsonMap.widthInChunks = tileMap.getWidth() / jsonMap.chunkWidth;
-		jsonMap.heightInChunks = tileMap.getWidth() / jsonMap.chunkHeight;
-		jsonMap.depthInChunks = tileMap.getWidth() / jsonMap.chunkDepth;
+		jsonMap.heightInChunks = tileMap.getHeight() / jsonMap.chunkHeight;
+		jsonMap.depthInChunks = tileMap.getDepth() / jsonMap.chunkDepth;
 
 		// TODO: figure out real lighting mode from the types of vertex generator / lighter objects set
 		jsonMap.lightingMode = null;
