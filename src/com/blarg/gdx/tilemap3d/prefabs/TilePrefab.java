@@ -2,7 +2,6 @@ package com.blarg.gdx.tilemap3d.prefabs;
 
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.tilemap3d.Tile;
 import com.blarg.gdx.tilemap3d.TileContainer;
 import com.blarg.gdx.tilemap3d.TileRawDataContainer;
