@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Disposable;
 
-public class TileChunk extends TileContainer implements Disposable {
+public class TileChunk extends TileContainer implements TileRawDataContainer, Disposable {
 	final int x;
 	final int y;
 	final int z;
@@ -23,6 +23,7 @@ public class TileChunk extends TileContainer implements Disposable {
 	public TileChunkMesh alphaMesh;
 	public final TileMap tileMap;
 
+	@Override
 	public Tile[] getData() {
 		return data;
 	}

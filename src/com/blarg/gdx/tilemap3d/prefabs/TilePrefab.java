@@ -5,8 +5,9 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.tilemap3d.Tile;
 import com.blarg.gdx.tilemap3d.TileContainer;
+import com.blarg.gdx.tilemap3d.TileRawDataContainer;
 
-public class TilePrefab extends TileContainer {
+public class TilePrefab extends TileContainer implements TileRawDataContainer {
 	public enum Rotation {
 		ROT0(0),
 		ROT90(90),
@@ -42,6 +43,11 @@ public class TilePrefab extends TileContainer {
 	int rotationZPreMultiplier;
 	final BoundingBox rotationBounds = new BoundingBox();
 	final BoundingBox tmpRotationBounds = new BoundingBox();
+
+	@Override
+	public Tile[] getData() {
+		return new Tile[0];
+	}
 
 	@Override
 	public int getWidth() {
