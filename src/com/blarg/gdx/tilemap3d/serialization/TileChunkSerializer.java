@@ -6,7 +6,7 @@ import com.blarg.gdx.tilemap3d.TileChunk;
 import java.nio.ByteBuffer;
 
 public class TileChunkSerializer {
-	public static final int TILE_SIZE_BYTES = 10;  // TODO: is there some kind of java sizeof() type thing?
+	public static final int TILE_SIZE_BYTES = 17;  // TODO: is there some kind of java sizeof() type thing?
 
 	public static void serialize(TileChunk chunk, ByteBuffer buffer) {
 		Tile[] tiles = chunk.getData();
@@ -25,6 +25,13 @@ public class TileChunkSerializer {
 		buffer.putShort(tile.flags);
 		buffer.put(tile.tileLight);
 		buffer.put(tile.skyLight);
+		buffer.put(tile.rotation);
+		buffer.put(tile.parentTileOffsetX);
+		buffer.put(tile.parentTileOffsetY);
+		buffer.put(tile.parentTileOffsetZ);
+		buffer.put(tile.parentTileWidth);
+		buffer.put(tile.parentTileHeight);
+		buffer.put(tile.parentTileDepth);
 		buffer.putInt(tile.color);
 	}
 
@@ -33,6 +40,13 @@ public class TileChunkSerializer {
 		out.flags = buffer.getShort();
 		out.tileLight = buffer.get();
 		out.skyLight = buffer.get();
+		out.rotation = buffer.get();
+		out.parentTileOffsetX = buffer.get();
+		out.parentTileOffsetY = buffer.get();
+		out.parentTileOffsetZ = buffer.get();
+		out.parentTileWidth = buffer.get();
+		out.parentTileHeight = buffer.get();
+		out.parentTileDepth = buffer.get();
 		out.color = buffer.getInt();
 	}
 }
