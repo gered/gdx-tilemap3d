@@ -59,7 +59,7 @@ public class TileMapLoader {
 			byte[] chunkBytes = Base64Coder.decode(encodedChunk);
 			ByteBuffer buffer = ByteBuffer.wrap(chunkBytes);
 
-			TileChunkSerializer.deserialize(buffer, outputChunk);
+			TileDataSerializer.deserialize(buffer, outputChunk);
 		}
 
 		return tileMap;
@@ -81,7 +81,7 @@ public class TileMapLoader {
 		jsonMap.lightingMode = null;
 
 		// each serialized chunk will be the same size in bytes (same number of tiles in each)
-		int chunkSizeInBytes = tileMap.getChunks()[0].getData().length * TileChunkSerializer.TILE_SIZE_BYTES;
+		int chunkSizeInBytes = tileMap.getChunks()[0].getData().length * TileDataSerializer.TILE_SIZE_BYTES;
 
 		jsonMap.chunks = new ArrayList<String>(tileMap.getChunks().length);
 		for (int i = 0; i < tileMap.getChunks().length; ++i) {
@@ -90,7 +90,7 @@ public class TileMapLoader {
 			byte[] chunkBytes = new byte[chunkSizeInBytes];
 			ByteBuffer buffer = ByteBuffer.wrap(chunkBytes);
 
-			TileChunkSerializer.serialize(chunk, buffer);
+			TileDataSerializer.serialize(chunk, buffer);
 
 			jsonMap.chunks.add(new String(Base64Coder.encode(chunkBytes)));
 		}

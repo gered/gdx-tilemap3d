@@ -1,20 +1,20 @@
 package com.blarg.gdx.tilemap3d.serialization;
 
 import com.blarg.gdx.tilemap3d.Tile;
-import com.blarg.gdx.tilemap3d.TileChunk;
+import com.blarg.gdx.tilemap3d.TileRawDataContainer;
 
 import java.nio.ByteBuffer;
 
-public class TileChunkSerializer {
+public class TileDataSerializer {
 	public static final int TILE_SIZE_BYTES = 17;  // TODO: is there some kind of java sizeof() type thing?
 
-	public static void serialize(TileChunk chunk, ByteBuffer buffer) {
-		Tile[] tiles = chunk.getData();
+	public static void serialize(TileRawDataContainer tileData, ByteBuffer buffer) {
+		Tile[] tiles = tileData.getData();
 		for (int i = 0; i < tiles.length; ++i)
 			serialize(tiles[i], buffer);
 	}
 
-	public static void deserialize(ByteBuffer buffer, TileChunk out) {
+	public static void deserialize(ByteBuffer buffer, TileRawDataContainer out) {
 		Tile[] tiles = out.getData();
 		for (int i = 0; i < tiles.length; ++i)
 			deserialize(buffer, tiles[i]);
