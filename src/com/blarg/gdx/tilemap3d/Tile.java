@@ -39,6 +39,9 @@ public final class Tile {
 	public byte parentTileOffsetX;
 	public byte parentTileOffsetY;
 	public byte parentTileOffsetZ;
+	public byte parentTileWidth;
+	public byte parentTileHeight;
+	public byte parentTileDepth;
 	public int color;
 
 	public Tile() {
@@ -77,6 +80,9 @@ public final class Tile {
 		this.parentTileOffsetX = other.parentTileOffsetX;
 		this.parentTileOffsetY = other.parentTileOffsetY;
 		this.parentTileOffsetZ = other.parentTileOffsetZ;
+		this.parentTileWidth = other.parentTileWidth;
+		this.parentTileHeight = other.parentTileHeight;
+		this.parentTileDepth = other.parentTileDepth;
 		this.color = other.color;
 		return this;
 	}
