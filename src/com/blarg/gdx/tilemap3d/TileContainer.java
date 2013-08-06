@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.blarg.gdx.math.IntersectionTester;
 import com.blarg.gdx.math.MathHelpers;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public abstract class TileContainer {
@@ -257,7 +259,7 @@ public abstract class TileContainer {
 		return collided;
 	}
 
-	public boolean checkForCollision(Ray ray, TileCoord collisionCoords, Vector3 tileMeshCollisionPoint) {
+	public boolean checkForCollision(Ray ray, TileCoord collisionCoords, TileMeshCollection tileMeshes, Vector3 tileMeshCollisionPoint) {
 		// if the ray doesn't collide with any solid tiles in the first place, then
 		// we can skip this more expensive triangle collision check...
 		if (!checkForCollision(ray, tmpCoords))
@@ -271,11 +273,49 @@ public abstract class TileContainer {
 		return checkForCollisionWithTileMesh(
 				ray,
 				tmpCoords.x, tmpCoords.y, tmpCoords.z,
+				tileMeshes,
 				tileMeshCollisionPoint
 		);
 	}
 
-	public boolean checkForCollisionWithTileMesh(Ray ray, int x, int y, int z, Vector3 collisionPoint) {
-		throw new NotImplementedException();
+	static final Vector3 tileWorldPosition = new Vector3();
+	static final Vector3 collisionPoint = new Vector3();
+	static final Vector3 tmpA = new Vector3();
+	static final Vector3 tmpB = new Vector3();
+	static final Vector3 tmpC = new Vector3();
+	public boolean checkForCollisionWithTileMesh(Ray ray, int x, int y, int z, TileMeshCollection tileMeshes, Vector3 outCollisionPoint) {
+		Tile tile = get(x, y, z);
+		TileMesh mesh = tileMeshes.get(tile);
+
+		Vector3[] vertices = mesh.getCollisionVertices();
+
+		// world position of this tile, will be used to move each
+		// mesh triangle into world space
+		tileWorldPosition.set((float)x, (float)y, (float)z);
+
+		float closestSquaredDistance = Float.POSITIVE_INFINITY;
+		boolean collided = false;
+		collisionPoint.set(Vector3.Zero);
+
+		for (int i = 0; i < vertices.length; i += 3) {
+			// get the vertices making up this triangle (and move the vertices into world space)
+			tmpA.set(vertices[i]).add(tileWorldPosition);
+			tmpB.set(vertices[i + 1]).add(tileWorldPosition);
+			tmpC.set(vertices[i + 2]).add(tileWorldPosition);
+
+			if (Intersector.intersectRayTriangle(ray, tmpA, tmpB, tmpC, collisionPoint)) {
+				collided = true;
+
+				// if this is the closest collision yet, then keep the distance
+				// and point of collision
+				float squaredDistance = tmp1.set(collisionPoint).sub(ray.origin).len2();
+				if (squaredDistance < closestSquaredDistance) {
+					closestSquaredDistance = squaredDistance;
+					outCollisionPoint.set(collisionPoint);
+				}
+			}
+		}
+
+		return collided;
 	}
 }
