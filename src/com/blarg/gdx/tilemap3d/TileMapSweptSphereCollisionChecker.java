@@ -19,15 +19,19 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 
 	public TileMap tileMap;
 
+	public final TileCoord lastCollisionTilePosition = new TileCoord();
+
 	@Override
-	public void checkForCollisions(SweptSphere sphere, BoundingBox possibleCollisionArea) {
+	public boolean checkForCollisions(SweptSphere sphere, BoundingBox possibleCollisionArea) {
 		if (tileMap == null)
 			throw new UnsupportedOperationException("No TileMap object is set.");
-		
+
 		min.set(0, 0, 0);
 		max.set(0, 0, 0);
 
 		float lastCollisionDistance = Float.MAX_VALUE;
+		boolean foundCollision = false;
+		lastCollisionTilePosition.set(0, 0, 0);
 
 		// TODO: I don't think we even need to check if the area overlaps ... ?
 		//       (it probably always will, right?)
@@ -77,13 +81,21 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 								// will contain info for the closest intersection
 								// found
 								boolean collided = SweptSphereCollisionTester.test(sphere, a, b, c);
-								if (collided && sphere.nearestCollisionDistance < lastCollisionDistance)
+								if (collided && sphere.nearestCollisionDistance < lastCollisionDistance) {
+									foundCollision = true;
 									lastCollisionDistance = sphere.nearestCollisionDistance;
+
+									// this is the closest collision found so far
+									// record the grid position ...
+									lastCollisionTilePosition.set(x, y, z);
+								}
 							}
 						}
 					}
 				}
 			}
 		}
+
+		return foundCollision;
 	}
 }
