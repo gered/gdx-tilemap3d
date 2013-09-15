@@ -3,6 +3,8 @@ package com.blarg.gdx.tilemap3d;
 import com.badlogic.gdx.math.Vector3;
 
 public final class TileCoord {
+	public static final TileCoord Zero = new TileCoord(0, 0, 0);
+
 	public int x;
 	public int y;
 	public int z;

@@ -31,7 +31,7 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 
 		float lastCollisionDistance = Float.MAX_VALUE;
 		boolean foundCollision = false;
-		lastCollisionTilePosition.set(0, 0, 0);
+		lastCollisionTilePosition.set(TileCoord.Zero);
 
 		// TODO: I don't think we even need to check if the area overlaps ... ?
 		//       (it probably always will, right?)
