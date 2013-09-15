@@ -155,7 +155,7 @@ public class TileMap extends TileContainer implements Disposable {
 
 	public boolean getOverlappedChunks(BoundingBox box, TileCoord min, TileCoord max) {
 		// make sure the given box actually intersects with the map in the first place
-		if (!IntersectionTester.overlaps(bounds, box))
+		if (!IntersectionTester.test(bounds, box))
 			return false;
 
 		// convert to tile coords. this is in "tilemap space" which is how we want it

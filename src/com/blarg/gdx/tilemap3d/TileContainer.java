@@ -9,7 +9,6 @@ import com.blarg.gdx.math.IntersectionTester;
 import com.blarg.gdx.math.MathHelpers;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public abstract class TileContainer {
 	static final Vector3 tmp1 = new Vector3();
@@ -67,7 +66,7 @@ public abstract class TileContainer {
 
 	public boolean getOverlappedTiles(BoundingBox box, TileCoord min, TileCoord max) {
 		// make sure the given box actually intersects with this TileContainer in the first place
-		if (!IntersectionTester.overlaps(getBounds(), box))
+		if (!IntersectionTester.test(getBounds(), box))
 			return false;
 
 		// convert to tile coords (these will be in "world/tilemap space")
