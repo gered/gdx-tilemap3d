@@ -17,17 +17,13 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 	static final Vector3 b = new Vector3();
 	static final Vector3 c = new Vector3();
 
-	TileMap tileMap;
-
-	public TileMapSweptSphereCollisionChecker(TileMap tileMap) {
-		if (tileMap == null)
-			throw new IllegalArgumentException("tileMap can not be null.");
-
-		this.tileMap = tileMap;
-	}
+	public TileMap tileMap;
 
 	@Override
 	public void checkForCollisions(SweptSphere sphere, BoundingBox possibleCollisionArea) {
+		if (tileMap == null)
+			throw new UnsupportedOperationException("No TileMap object is set.");
+		
 		min.set(0, 0, 0);
 		max.set(0, 0, 0);
 
