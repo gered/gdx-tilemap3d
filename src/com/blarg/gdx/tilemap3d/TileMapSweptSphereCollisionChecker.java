@@ -3,7 +3,6 @@ package com.blarg.gdx.tilemap3d;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.math.SweptSphere;
 import com.blarg.gdx.math.SweptSphereCollisionTester;
 import com.blarg.gdx.math.SweptSphereWorldCollisionChecker;
@@ -43,7 +42,7 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 						Tile tile = tileMap.get(x, y, z);
 
 						// only check solid tiles
-						if (Bitfield.isSet(Tile.FLAG_COLLIDEABLE, tile.flags)) {
+						if (tile.isCollideable()) {
 							// check each triangle in this tile's mesh
 							TileMesh mesh = tileMap.tileMeshes.get(tile);
 							Vector3[] vertices = mesh.getCollisionVertices();
