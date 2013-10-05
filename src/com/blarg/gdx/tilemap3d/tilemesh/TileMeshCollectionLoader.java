@@ -12,13 +12,20 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.graphics.atlas.TextureAtlas;
+import com.blarg.gdx.io.FileHelpers;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public final class TileMeshCollectionLoader {
+	public static TileMeshCollection load(String configFile, TextureAtlas atlas) {
+		return load(Gdx.files.internal(configFile), atlas);
+	}
+
 	public static TileMeshCollection load(FileHandle configFile, TextureAtlas atlas) {
+		String path = FileHelpers.getPath(configFile);
+
 		if (atlas == null)
 			throw new IllegalArgumentException();
 
@@ -151,7 +158,7 @@ public final class TileMeshCollectionLoader {
 			} else if (tileDef.model != null) {
 				model = models.get(tileDef.model);
 				if (model == null) {
-					model = loader.loadModel(Gdx.files.internal(tileDef.model));
+					model = loader.loadModel(FileHelpers.open(configFile.type(), path + tileDef.model));
 					models.put(tileDef.model, model);
 				}
 
@@ -161,7 +168,7 @@ public final class TileMeshCollectionLoader {
 					//override with a specific collision model
 					collisionModel = models.get(tileDef.collisionModel);
 					if (collisionModel == null) {
-						collisionModel = loader.loadModel(Gdx.files.internal(tileDef.collisionModel));
+						collisionModel = loader.loadModel(FileHelpers.open(configFile.type(), path + tileDef.collisionModel));
 						models.put(tileDef.collisionModel, collisionModel);
 					}
 				}
@@ -184,7 +191,7 @@ public final class TileMeshCollectionLoader {
 
 					submodels[j] = models.get(subModelDef.submodel);
 					if (model == null) {
-						submodels[j] = loader.loadModel(Gdx.files.internal(subModelDef.submodel));
+						submodels[j] = loader.loadModel(FileHelpers.open(configFile.type(), path + subModelDef.submodel));
 						models.put(subModelDef.submodel, submodels[j]);
 					}
 
@@ -203,7 +210,7 @@ public final class TileMeshCollectionLoader {
 					//override with a specific collision model
 					collisionModel = models.get(tileDef.collisionModel);
 					if (collisionModel == null) {
-						collisionModel = loader.loadModel(Gdx.files.internal(tileDef.collisionModel));
+						collisionModel = loader.loadModel(FileHelpers.open(configFile.type(), path + tileDef.collisionModel));
 						models.put(tileDef.collisionModel, collisionModel);
 					}
 				}
