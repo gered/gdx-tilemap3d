@@ -1,4 +1,4 @@
-package com.blarg.gdx.tilemap3d.tilemesh;
+package com.blarg.gdx.tilemap3d.tilemesh.json;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
@@ -13,6 +13,13 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.blarg.gdx.Bitfield;
 import com.blarg.gdx.graphics.atlas.TextureAtlas;
 import com.blarg.gdx.io.FileHelpers;
+import com.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
+import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
+import com.blarg.gdx.tilemap3d.tilemesh.json.JsonMaterialMapping;
+import com.blarg.gdx.tilemap3d.tilemesh.json.JsonTileDefinition;
+import com.blarg.gdx.tilemap3d.tilemesh.json.JsonTileMeshCollection;
+import com.blarg.gdx.tilemap3d.tilemesh.json.JsonTileSubModels;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;

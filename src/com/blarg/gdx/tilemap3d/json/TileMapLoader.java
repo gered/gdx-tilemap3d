@@ -1,4 +1,4 @@
-package com.blarg.gdx.tilemap3d.serialization;
+package com.blarg.gdx.tilemap3d.json;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

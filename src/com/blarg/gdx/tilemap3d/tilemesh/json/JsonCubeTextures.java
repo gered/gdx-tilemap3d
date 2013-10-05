@@ -1,4 +1,4 @@
-package com.blarg.gdx.tilemap3d.tilemesh;
+package com.blarg.gdx.tilemap3d.tilemesh.json;
 
 public class JsonCubeTextures {
 	public int top;

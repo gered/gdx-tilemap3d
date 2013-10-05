@@ -1,4 +1,4 @@
-package com.blarg.gdx.tilemap3d.tilemesh;
+package com.blarg.gdx.tilemap3d.tilemesh.json;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
