@@ -45,7 +45,7 @@ public class TilePrefab extends TileContainer implements TileRawDataContainer {
 
 	@Override
 	public Tile[] getData() {
-		return new Tile[0];
+		return data;
 	}
 
 	@Override
