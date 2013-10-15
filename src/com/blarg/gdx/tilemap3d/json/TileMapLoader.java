@@ -16,6 +16,10 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class TileMapLoader {
+	public static TileMap load(String mapFile, TileMeshCollection tileMeshes) {
+		return load(Gdx.files.internal(mapFile), tileMeshes);
+	}
+
 	public static TileMap load(FileHandle mapFile, TileMeshCollection tileMeshes) {
 		if (mapFile == null)
 			throw new IllegalArgumentException();
