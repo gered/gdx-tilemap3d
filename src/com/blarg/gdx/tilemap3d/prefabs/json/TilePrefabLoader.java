@@ -1,5 +1,6 @@
 package com.blarg.gdx.tilemap3d.prefabs.json;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
@@ -10,6 +11,10 @@ import com.blarg.gdx.tilemap3d.prefabs.TilePrefab;
 import java.nio.ByteBuffer;
 
 public class TilePrefabLoader {
+	public static TilePrefab load(String prefabFile) {
+		return load(Gdx.files.internal(prefabFile));
+	}
+
 	public static TilePrefab load(FileHandle prefabFile) {
 		if (prefabFile == null)
 			throw new IllegalArgumentException();
