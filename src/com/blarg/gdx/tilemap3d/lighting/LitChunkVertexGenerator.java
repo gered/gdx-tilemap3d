@@ -11,6 +11,7 @@ import com.blarg.gdx.tilemap3d.Tile;
 import com.blarg.gdx.tilemap3d.TileChunk;
 import com.blarg.gdx.tilemap3d.TileCoord;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class LitChunkVertexGenerator extends ChunkVertexGenerator {
 	final Vector3 tmpOffset = new Vector3();
@@ -57,18 +58,13 @@ public class LitChunkVertexGenerator extends ChunkVertexGenerator {
 			// "look in" for the light source ...
 
 			// get the exact "world/tilemap space" position to grab a potential light source tile from
-			tmpLightSourcePos.set(vertex.position).add(vertex.normal);
-
-			// HACK: if the light source position we just got lies exactly on the max x/y/z boundaries of this tile
-			//       then casting it to int and using it as a tilemap grid coord to get the tile will fetch us the
-			//       _next_ tile which we probably don't want when the position is exactly at max x/y/z ...
-			//       (this was resulting in some incorrect dark edges along certain tile layouts)
-			if (tmpLightSourcePos.x == tmpBounds.max.x)
-				tmpLightSourcePos.x -= 0.01f;
-			if (tmpLightSourcePos.y == tmpBounds.max.y)
-				tmpLightSourcePos.y -= 0.01f;
-			if (tmpLightSourcePos.z == tmpBounds.max.z)
-				tmpLightSourcePos.z -= 0.01f;
+			if (!tile.isLargeTile())
+				// using the center of this tile as the reference point this helps avoid problems with using the vertex
+				// as the ref point where the vertex is at the very edge of the tile boundaries facing out of the tile
+				// (we could end up inadvertenly skipping over the tile we should get the light from in such a case)
+				tmpLightSourcePos.set(tmpOffset).add(vertex.normal);
+			else
+				throw new NotImplementedException();
 
 			float brightness;
 
