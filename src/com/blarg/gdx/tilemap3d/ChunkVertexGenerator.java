@@ -81,48 +81,18 @@ public class ChunkVertexGenerator {
 		Tile up = chunk.getWithinSelfOrNeighbourSafe(x, y + 1, z);
 
 		// evaluate each face's visibility and add it's vertices if needed one at a time
-		if (canRenderCubeFace(tile, mesh, left, TileMesh.SIDE_LEFT, TileMesh.SIDE_RIGHT, color, chunk.tileMap.tileMeshes)) {
-			// left face is visible
-			if (mesh.alpha)
-				addMesh(alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-			else
-				addMesh(builder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-		}
-		if (canRenderCubeFace(tile, mesh, right, TileMesh.SIDE_RIGHT, TileMesh.SIDE_LEFT, color, chunk.tileMap.tileMeshes)) {
-			// right face is visible
-			if (mesh.alpha)
-				addMesh(alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-			else
-				addMesh(builder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-		}
-		if (canRenderCubeFace(tile, mesh, forward, TileMesh.SIDE_FRONT, TileMesh.SIDE_BACK, color, chunk.tileMap.tileMeshes)) {
-			// front face is visible
-			if (mesh.alpha)
-				addMesh(alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-			else
-				addMesh(builder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-		}
-		if (canRenderCubeFace(tile, mesh, backward, TileMesh.SIDE_BACK, TileMesh.SIDE_FRONT, color, chunk.tileMap.tileMeshes)) {
-			// back face is visible
-			if (mesh.alpha)
-				addMesh(alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-			else
-				addMesh(builder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-		}
-		if (canRenderCubeFace(tile, mesh, down, TileMesh.SIDE_BOTTOM, TileMesh.SIDE_TOP, color, chunk.tileMap.tileMeshes)) {
-			// bottom face is visible
-			if (mesh.alpha)
-				addMesh(alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-			else
-				addMesh(builder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-		}
-		if (canRenderCubeFace(tile, mesh, up, TileMesh.SIDE_TOP, TileMesh.SIDE_BOTTOM, color, chunk.tileMap.tileMeshes)) {
-			// top face is visible
-			if (mesh.alpha)
-				addMesh(alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-			else
-				addMesh(builder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
-		}
+		if (canRenderCubeFace(tile, mesh, left, TileMesh.SIDE_LEFT, TileMesh.SIDE_RIGHT, color, chunk.tileMap.tileMeshes))
+			renderCubeFace(builder, alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.leftFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+		if (canRenderCubeFace(tile, mesh, right, TileMesh.SIDE_RIGHT, TileMesh.SIDE_LEFT, color, chunk.tileMap.tileMeshes))
+			renderCubeFace(builder, alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.rightFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+		if (canRenderCubeFace(tile, mesh, forward, TileMesh.SIDE_FRONT, TileMesh.SIDE_BACK, color, chunk.tileMap.tileMeshes))
+			renderCubeFace(builder, alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.frontFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+		if (canRenderCubeFace(tile, mesh, backward, TileMesh.SIDE_BACK, TileMesh.SIDE_FRONT, color, chunk.tileMap.tileMeshes))
+			renderCubeFace(builder, alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.backFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+		if (canRenderCubeFace(tile, mesh, down, TileMesh.SIDE_BOTTOM, TileMesh.SIDE_TOP, color, chunk.tileMap.tileMeshes))
+			renderCubeFace(builder, alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.bottomFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
+		if (canRenderCubeFace(tile, mesh, up, TileMesh.SIDE_TOP, TileMesh.SIDE_BOTTOM, color, chunk.tileMap.tileMeshes))
+			renderCubeFace(builder, alphaBuilder, tile, mesh, chunk, tileMapPosition, transform, color, mesh.topFaceVertexOffset, TileMesh.CUBE_VERTICES_PER_FACE);
 	}
 
 	private boolean canRenderCubeFace(Tile currentTile, CubeTileMesh currentTileMesh, Tile adjacentTile, byte faceToCheck, byte adjacentFace, Color color, TileMeshCollection tileMeshes) {
@@ -143,6 +113,13 @@ public class ChunkVertexGenerator {
 			return true;
 
 		return false;
+	}
+
+	private void renderCubeFace(MeshBuilder builder, MeshBuilder alphaBuilder, Tile tile, TileMesh sourceMesh, TileChunk chunk, TileCoord position, Matrix4 transform, Color color, int firstVertex, int numVertices) {
+		if (sourceMesh.alpha)
+			addMesh(alphaBuilder, tile, sourceMesh, chunk, position, transform, color, firstVertex, numVertices);
+		else
+			addMesh(builder, tile, sourceMesh, chunk, position, transform, color, firstVertex, numVertices);
 	}
 
 	private void handleGenericMesh(int x, int y, int z, Tile tile, TileChunk chunk, TileMesh mesh, TileCoord tileMapPosition, Matrix4 transform, Color color) {
