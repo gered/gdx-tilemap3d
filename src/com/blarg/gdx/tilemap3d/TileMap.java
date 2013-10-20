@@ -141,11 +141,7 @@ public class TileMap extends TileContainer implements Disposable {
 
 	public void updateVertices() {
 		for (int i = 0; i < chunks.length; ++i)
-			updateChunkVertices(chunks[i]);
-	}
-
-	private void updateChunkVertices(TileChunk chunk) {
-		chunk.updateVertices(vertexGenerator);
+			chunks[i].updateVertices(vertexGenerator);
 	}
 
 	public void updateLighting() {
