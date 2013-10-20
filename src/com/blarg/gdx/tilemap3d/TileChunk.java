@@ -1,10 +1,19 @@
 package com.blarg.gdx.tilemap3d;
 
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.g3d.Renderable;
+import com.badlogic.gdx.graphics.g3d.RenderableProvider;
+import com.badlogic.gdx.graphics.g3d.materials.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.materials.Material;
+import com.badlogic.gdx.graphics.g3d.materials.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Pool;
 
-public class TileChunk extends TileContainer implements TileRawDataContainer, Disposable {
+public class TileChunk extends TileContainer implements TileRawDataContainer, RenderableProvider, Disposable {
 	final int x;
 	final int y;
 	final int z;
@@ -18,8 +27,13 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Di
 	final Vector3 position;
 	final Vector3 tmpPosition = new Vector3();
 
-	public TileChunkMesh mesh;
-	public TileChunkMesh alphaMesh;
+	Mesh opaqueMesh;
+	Mesh alphaMesh;
+	final Material opaqueMaterial = new Material();
+	final Material alphaMaterial = new Material();
+	final BoundingBox opaqueMeshBounds = new BoundingBox();
+	final BoundingBox alphaMeshBounds = new BoundingBox();
+
 	public final TileMap tileMap;
 
 	@Override
@@ -85,11 +99,11 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Di
 	}
 
 	public int getNumVertices() {
-		return mesh.mesh != null ? mesh.mesh.getNumVertices() : 0;
+		return opaqueMesh != null ? opaqueMesh.getNumVertices() : 0;
 	}
 
 	public int getNumAlphaVertices() {
-		return alphaMesh.mesh != null ? alphaMesh.mesh.getNumVertices() : 0;
+		return alphaMesh != null ? alphaMesh.getNumVertices() : 0;
 	}
 
 	public TileChunk(int x, int y, int z, int width, int height, int depth, TileMap tileMap) {
@@ -113,12 +127,31 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Di
 		for (int i = 0; i < numTiles; ++i)
 			data[i] = new Tile();
 
-		mesh = new TileChunkMesh(this, false);
-		alphaMesh = new TileChunkMesh(this, true);
+		opaqueMesh = null;
+		alphaMesh = null;
+		opaqueMaterial.set(TextureAttribute.createDiffuse(tileMap.tileMeshes.atlas.texture));
+		alphaMaterial.set(TextureAttribute.createDiffuse(tileMap.tileMeshes.atlas.texture));
+		alphaMaterial.set(new BlendingAttribute());
 	}
 
 	public void updateVertices(ChunkVertexGenerator generator) {
-		generator.generate(this);
+		ChunkVertexGenerator.GeneratedChunkMeshes generatedMeshes = generator.generate(this);
+
+		if (generatedMeshes.opaqueMesh.getNumVertices() > 0) {
+			opaqueMesh = generatedMeshes.opaqueMesh;
+			opaqueMesh.calculateBoundingBox(opaqueMeshBounds);
+		} else {
+			opaqueMesh = null;
+			opaqueMeshBounds.clr();
+		}
+
+		if (generatedMeshes.alphaMesh.getNumVertices() > 0) {
+			alphaMesh = generatedMeshes.alphaMesh;
+			alphaMesh.calculateBoundingBox(alphaMeshBounds);
+		} else {
+			alphaMesh = null;
+			alphaMeshBounds.clr();
+		}
 	}
 
 	public Tile getWithinSelfOrNeighbour(int x, int y, int z) {
@@ -157,8 +190,30 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Di
 	}
 
 	@Override
+	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
+		if (opaqueMesh != null)
+			renderables.add(getRenderableFor(pool, opaqueMesh, opaqueMaterial, opaqueMeshBounds));
+		if (alphaMesh != null)
+			renderables.add(getRenderableFor(pool, alphaMesh, alphaMaterial, alphaMeshBounds));
+	}
+
+	private Renderable getRenderableFor(Pool<Renderable> pool, Mesh mesh, Material material, Object userData) {
+		Renderable renderable = pool.obtain();
+		renderable.mesh = mesh;
+		renderable.meshPartOffset = 0;
+		renderable.meshPartSize = mesh.getNumVertices();
+		renderable.primitiveType = GL20.GL_TRIANGLES;
+		renderable.bones = null;
+		renderable.lights = null;
+		renderable.shader = null;
+		renderable.userData = userData;
+		renderable.material = material;
+		return renderable;
+	}
+
+	@Override
 	public void dispose() {
-		mesh.dispose();
+		opaqueMesh.dispose();
 		alphaMesh.dispose();
 	}
 
