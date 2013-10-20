@@ -15,7 +15,7 @@ import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 public class ChunkVertexGenerator {
 	public class GeneratedChunkMeshes {
 		public Mesh opaqueMesh;
-		public Mesh alphaBesh;
+		public Mesh alphaMesh;
 	}
 
 	protected final MeshBuilder.VertexInfo vertex = new MeshPartBuilder.VertexInfo();
