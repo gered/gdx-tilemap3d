@@ -75,7 +75,7 @@ public class ChunkVertexGenerator {
 
 		GeneratedChunkMeshes output = new GeneratedChunkMeshes();
 		output.opaqueMesh = builder.end();
-		output.alphaBesh = alphaBuilder.end();
+		output.alphaMesh = alphaBuilder.end();
 		return output;
 	}
 
