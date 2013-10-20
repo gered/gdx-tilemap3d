@@ -1,6 +1,7 @@
 package com.blarg.gdx.tilemap3d;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
@@ -12,6 +13,11 @@ import com.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 import com.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 
 public class ChunkVertexGenerator {
+	public class GeneratedChunkMeshes {
+		public Mesh opaqueMesh;
+		public Mesh alphaBesh;
+	}
+
 	protected final MeshBuilder.VertexInfo vertex = new MeshPartBuilder.VertexInfo();
 
 	final MeshBuilder builder = new MeshBuilder();
@@ -21,7 +27,7 @@ public class ChunkVertexGenerator {
 	final Color tmpColor = new Color();
 	final Vector3 tmpOffset = new Vector3();
 
-	public void generate(TileChunk chunk) {
+	public GeneratedChunkMeshes generate(TileChunk chunk) {
 		TileMap tileMap = chunk.tileMap;
 
 		builder.begin(
@@ -67,8 +73,10 @@ public class ChunkVertexGenerator {
 			}
 		}
 
-		chunk.mesh.setMesh(builder.end());
-		chunk.alphaMesh.setMesh(alphaBuilder.end());
+		GeneratedChunkMeshes output = new GeneratedChunkMeshes();
+		output.opaqueMesh = builder.end();
+		output.alphaBesh = alphaBuilder.end();
+		return output;
 	}
 
 	private void handleCubeMesh(int x, int y, int z, Tile tile, TileChunk chunk, CubeTileMesh mesh, TileCoord tileMapPosition, Matrix4 transform, Color color) {
