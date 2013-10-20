@@ -31,8 +31,7 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 	Mesh alphaMesh;
 	final Material opaqueMaterial = new Material();
 	final Material alphaMaterial = new Material();
-	final BoundingBox opaqueMeshBounds = new BoundingBox();
-	final BoundingBox alphaMeshBounds = new BoundingBox();
+	final BoundingBox meshBounds = new BoundingBox();
 
 	public final TileMap tileMap;
 
@@ -98,6 +97,11 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 		return tmpBounds;
 	}
 
+	public BoundingBox getMeshBounds() {
+		tmpBounds.set(meshBounds);
+		return tmpBounds;
+	}
+
 	public int getNumVertices() {
 		return opaqueMesh != null ? opaqueMesh.getNumVertices() : 0;
 	}
@@ -137,21 +141,21 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 	public void updateVertices(ChunkVertexGenerator generator) {
 		ChunkVertexGenerator.GeneratedChunkMeshes generatedMeshes = generator.generate(this);
 
+		meshBounds.clr();
+
 		if (generatedMeshes.opaqueMesh.getNumVertices() > 0) {
 			opaqueMesh = generatedMeshes.opaqueMesh;
-			opaqueMesh.calculateBoundingBox(opaqueMeshBounds);
-		} else {
+			opaqueMesh.calculateBoundingBox(tmpBounds);
+			meshBounds.ext(tmpBounds);
+		} else
 			opaqueMesh = null;
-			opaqueMeshBounds.clr();
-		}
 
 		if (generatedMeshes.alphaMesh.getNumVertices() > 0) {
 			alphaMesh = generatedMeshes.alphaMesh;
-			alphaMesh.calculateBoundingBox(alphaMeshBounds);
-		} else {
+			alphaMesh.calculateBoundingBox(tmpBounds);
+			meshBounds.ext(tmpBounds);
+		} else
 			alphaMesh = null;
-			alphaMeshBounds.clr();
-		}
 	}
 
 	public Tile getWithinSelfOrNeighbour(int x, int y, int z) {
@@ -192,9 +196,9 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 	@Override
 	public void getRenderables(Array<Renderable> renderables, Pool<Renderable> pool) {
 		if (opaqueMesh != null)
-			renderables.add(getRenderableFor(pool, opaqueMesh, opaqueMaterial, opaqueMeshBounds));
+			renderables.add(getRenderableFor(pool, opaqueMesh, opaqueMaterial, null));
 		if (alphaMesh != null)
-			renderables.add(getRenderableFor(pool, alphaMesh, alphaMaterial, alphaMeshBounds));
+			renderables.add(getRenderableFor(pool, alphaMesh, alphaMaterial, null));
 	}
 
 	private Renderable getRenderableFor(Pool<Renderable> pool, Mesh mesh, Material material, Object userData) {
