@@ -117,7 +117,7 @@ public class ChunkVertexGenerator {
 		if (currentTileMesh.alpha && adjacentTileMesh.alpha && currentTile.tile == adjacentTile.tile && color.a < 1.0f)
 			return false;
 
-		if (!adjacentTileMesh.isOpaque(adjacentFace))
+		if (adjacentTileMesh.isOpaque(adjacentFace) == false)
 			return true;
 
 		return false;
