@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.g3d.Renderable;
 import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.graphics.g3d.materials.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.materials.FloatAttribute;
 import com.badlogic.gdx.graphics.g3d.materials.Material;
 import com.badlogic.gdx.graphics.g3d.materials.TextureAttribute;
 import com.badlogic.gdx.math.Vector3;
@@ -136,6 +137,7 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 		opaqueMaterial.set(TextureAttribute.createDiffuse(tileMap.tileMeshes.atlas.texture));
 		alphaMaterial.set(TextureAttribute.createDiffuse(tileMap.tileMeshes.atlas.texture));
 		alphaMaterial.set(new BlendingAttribute());
+		alphaMaterial.set(FloatAttribute.createAlphaTest(0.0f));
 	}
 
 	public void updateVertices(ChunkVertexGenerator generator) {
