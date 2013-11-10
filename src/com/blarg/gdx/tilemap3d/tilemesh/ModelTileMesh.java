@@ -2,22 +2,12 @@ package com.blarg.gdx.tilemap3d.tilemesh;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttribute;
-import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.model.MeshPart;
-import com.badlogic.gdx.graphics.g3d.model.Node;
-import com.badlogic.gdx.graphics.g3d.model.NodePart;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
-import com.blarg.gdx.graphics.atlas.TextureAtlas;
 import com.blarg.gdx.graphics.Vertices;
 import com.blarg.gdx.math.MathHelpers;
-
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
 
 public class ModelTileMesh extends BaseModelTileMesh {
 	static final Vector3 tmpPosition = new Vector3();
@@ -82,7 +72,7 @@ public class ModelTileMesh extends BaseModelTileMesh {
 				VertexAttribute.TexCoords(0)
 		);
 
-		model.getBoundingBox(tmpModelBounds);
+		model.calculateBoundingBox(tmpModelBounds);
 		if (scaleToSize != null) {
 			MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
 			bounds = new BoundingBox().set(Vector3.Zero, scaleToSize);
@@ -97,7 +87,7 @@ public class ModelTileMesh extends BaseModelTileMesh {
 
 	private void setupCollisionVertices(Model collisionModel) {
 		if (scaleToSize != null) {
-			collisionModel.getBoundingBox(tmpModelBounds);
+			collisionModel.calculateBoundingBox(tmpModelBounds);
 			MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
 		} else
 			tmpScaleFactor.set(1.0f, 1.0f, 1.0f);

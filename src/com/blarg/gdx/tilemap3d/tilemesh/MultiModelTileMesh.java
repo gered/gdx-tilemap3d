@@ -100,7 +100,7 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 			BoundingBox submodelBounds = new BoundingBox();
 			Vector3 scaleFactor = new Vector3();
 
-			submodel.getBoundingBox(tmpBounds);
+			submodel.calculateBoundingBox(tmpBounds);
 			if (scaleToSize != null) {
 				MathHelpers.getScaleFactor(tmpBounds.getDimensions(), scaleToSize, scaleFactor);
 				submodelBounds.set(Vector3.Zero, scaleToSize);
@@ -142,7 +142,7 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 			Vector3 scaleFactor = new Vector3();
 
 			if (scaleToSize != null) {
-				collisionModel.getBoundingBox(tmpBounds);
+				collisionModel.calculateBoundingBox(tmpBounds);
 				MathHelpers.getScaleFactor(tmpBounds.getDimensions(), scaleToSize, scaleFactor);
 			} else
 				scaleFactor.set(1.0f, 1.0f, 1.0f);

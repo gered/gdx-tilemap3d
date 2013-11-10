@@ -114,7 +114,7 @@ public abstract class BaseModelTileMesh extends TileMesh {
 	}
 
 	protected void getScaleFactorForModel(Model model, Vector3 scaleToSize, Vector3 out) {
-		model.getBoundingBox(tmpBounds);
+		model.calculateBoundingBox(tmpBounds);
 		MathHelpers.getScaleFactor(tmpBounds.getDimensions(), scaleToSize, out);
 	}
 
