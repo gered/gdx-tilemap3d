@@ -217,8 +217,10 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 
 	@Override
 	public void dispose() {
-		opaqueMesh.dispose();
-		alphaMesh.dispose();
+		if (opaqueMesh != null)
+			opaqueMesh.dispose();
+		if (alphaMesh != null)
+			alphaMesh.dispose();
 	}
 
 	@Override
