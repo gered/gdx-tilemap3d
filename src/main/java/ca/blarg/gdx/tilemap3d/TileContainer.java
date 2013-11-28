@@ -1,15 +1,13 @@
 package ca.blarg.gdx.tilemap3d;
 
-import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.math.collision.Ray;
 import ca.blarg.gdx.math.IntersectionTester;
 import ca.blarg.gdx.math.MathHelpers;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.math.collision.Ray;
 
 public abstract class TileContainer {
 	static final Vector3 tmp1 = new Vector3();
@@ -104,7 +102,8 @@ public abstract class TileContainer {
 
 	public boolean checkForCollision(Ray ray, TileCoord collisionCoords) {
 		// make sure that the ray and this TileContainer can actually collide in the first place
-		if (!Intersector.intersectRayBounds(ray, getBounds(), tmp1))
+		tmp1.set(Vector3.Zero);
+		if (!IntersectionTester.test(ray, getBounds(), tmp1))
 			return false;
 
 		// convert initial collision point to tile coords (this is in "world/tilemap space")
@@ -262,6 +261,7 @@ public abstract class TileContainer {
 	public boolean checkForCollision(Ray ray, TileCoord collisionCoords, TileMeshCollection tileMeshes, Vector3 tileMeshCollisionPoint) {
 		// if the ray doesn't collide with any solid tiles in the first place, then
 		// we can skip this more expensive triangle collision check...
+		tmpCoords.set(Vector3.Zero);
 		if (!checkForCollision(ray, tmpCoords))
 			return false;
 
@@ -303,7 +303,7 @@ public abstract class TileContainer {
 			tmpB.set(vertices[i + 1]).add(tileWorldPosition);
 			tmpC.set(vertices[i + 2]).add(tileWorldPosition);
 
-			if (Intersector.intersectRayTriangle(ray, tmpA, tmpB, tmpC, collisionPoint)) {
+			if (IntersectionTester.test(ray, tmpA, tmpB, tmpC, collisionPoint)) {
 				collided = true;
 
 				// if this is the closest collision yet, then keep the distance
