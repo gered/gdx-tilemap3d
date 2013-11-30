@@ -3,7 +3,7 @@ apply plugin: "maven"
 apply plugin: "eclipse"
 apply plugin: "idea"
 
-group = "com.blarg.gdx"
+group = "ca.blarg.gdx"
 version = "0.1-SNAPSHOT"
 ext.appName = "gdx-tilemap3d"
 ext.gdxVersion = "0.9.9"
@@ -18,7 +18,7 @@ repositories {
 
 dependencies {
 	compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-	compile "com.blarg.gdx:gdx-toolbox:0.1-SNAPSHOT"
+	compile "ca.blarg.gdx:gdx-toolbox:0.1-SNAPSHOT"
 }
 
 eclipse.project {
