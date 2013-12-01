@@ -178,7 +178,14 @@ public class ChunkVertexGenerator {
 		// copy vertices
 		for (int i = 0; i < numVertices; ++i) {
 			sourceVertices.getVertex(vertex);
-			vertex.color.set(color); // TODO: the getVertex() call above sets this, we're just overriding here... kind of wasteful .. ?
+
+			// TODO: need to play with vertex/mesh color combinations a bit more to see if this is really correct
+			vertex.color.set(
+					vertex.color.r * color.r,
+					vertex.color.g * color.g,
+					vertex.color.b * color.b,
+					vertex.color.a * color.a
+			);
 
 			// transform if applicable... (this will probably just be per-tile rotation)
 			if (transform != null) {
