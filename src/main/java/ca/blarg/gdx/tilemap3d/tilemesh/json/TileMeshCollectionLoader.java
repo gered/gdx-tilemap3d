@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -220,8 +219,9 @@ public final class TileMeshCollectionLoader {
 					}
 				}
 				if (tileDef.collisionShape != null) {
-					collisionModel = null;   // using a shape instead!
-					throw new NotImplementedException();
+					collisionModel = CollisionShapes.get(tileDef.collisionShape);
+					if (collisionModel == null)
+						throw new RuntimeException("collisionShape not recognized.");
 				}
 
 				collection.add(submodels, colors, scaleToSizes, positionOffsets, collisionModel, materialMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
