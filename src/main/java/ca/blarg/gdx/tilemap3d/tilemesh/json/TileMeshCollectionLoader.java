@@ -1,5 +1,12 @@
 package ca.blarg.gdx.tilemap3d.tilemesh.json;
 
+import ca.blarg.gdx.Bitfield;
+import ca.blarg.gdx.graphics.atlas.TextureAtlas;
+import ca.blarg.gdx.io.FileHelpers;
+import ca.blarg.gdx.tilemap3d.tilemesh.CollisionShapes;
+import ca.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
+import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
+import ca.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.files.FileHandle;
@@ -10,16 +17,6 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
-import ca.blarg.gdx.Bitfield;
-import ca.blarg.gdx.graphics.atlas.TextureAtlas;
-import ca.blarg.gdx.io.FileHelpers;
-import ca.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
-import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
-import ca.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
-import ca.blarg.gdx.tilemap3d.tilemesh.json.JsonMaterialMapping;
-import ca.blarg.gdx.tilemap3d.tilemesh.json.JsonTileDefinition;
-import ca.blarg.gdx.tilemap3d.tilemesh.json.JsonTileMeshCollection;
-import ca.blarg.gdx.tilemap3d.tilemesh.json.JsonTileSubModels;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
@@ -180,8 +177,9 @@ public final class TileMeshCollectionLoader {
 					}
 				}
 				if (tileDef.collisionShape != null) {
-					collisionModel = null;   // using a shape instead!
-					throw new NotImplementedException();
+					collisionModel = CollisionShapes.get(tileDef.collisionShape);
+					if (collisionModel == null)
+						throw new RuntimeException("collisionShape not recognized.");
 				}
 
 				collection.add(model, collisionModel, materialMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
