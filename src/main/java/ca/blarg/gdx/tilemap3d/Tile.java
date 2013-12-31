@@ -1,10 +1,10 @@
 package ca.blarg.gdx.tilemap3d;
 
+import ca.blarg.gdx.Bitfield;
+import ca.blarg.gdx.math.MathHelpers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import ca.blarg.gdx.Bitfield;
-import ca.blarg.gdx.math.MathHelpers;
 
 public final class Tile {
 	static final Matrix4 faceNorthRotation = new Matrix4().setToRotation(Vector3.Y, 0.0f);
@@ -183,6 +183,23 @@ public final class Tile {
 			return 0.0f;
 		else
 			return rotation * 90.0f;
+	}
+
+	public Tile makeLargeTile(boolean isParent, int width, int height, int depth) {
+		flags = Bitfield.set(FLAG_LARGE_TILE, flags);
+		if (isParent)
+			flags = Bitfield.set(FLAG_LARGE_TILE_OWNER, flags);
+		parentTileWidth = (byte)width;
+		parentTileHeight = (byte)height;
+		parentTileDepth = (byte)depth;
+		return this;
+	}
+
+	public Tile setParentOffset(int x, int y, int z) {
+		parentTileOffsetX = (byte)x;
+		parentTileOffsetY = (byte)y;
+		parentTileOffsetZ = (byte)z;
+		return this;
 	}
 
 	public static float getBrightness(byte light) {
