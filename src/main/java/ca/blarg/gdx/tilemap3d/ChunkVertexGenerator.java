@@ -50,6 +50,12 @@ public class ChunkVertexGenerator {
 					if (tile.isEmptySpace())
 						continue;
 
+					// only render large tile root/parent tiles or any other non-large-tile tiles
+					// (the idea being that the large tile's mesh will extend into the other non-root/parent tile
+					// spaces, so we shouldn't render anything for those other spaces)
+					if (tile.isLargeTile() && !tile.isLargeTileRoot())
+						continue;
+
 					TileMesh mesh = chunk.tileMap.tileMeshes.get(tile);
 
 					// "world/tilemap space" position that this tile is at
