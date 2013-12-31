@@ -1,5 +1,6 @@
 package ca.blarg.gdx.tilemap3d.lighting;
 
+import ca.blarg.gdx.graphics.Vertices;
 import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
 import ca.blarg.gdx.tilemap3d.Tile;
 import ca.blarg.gdx.tilemap3d.TileChunk;
@@ -10,13 +11,6 @@ import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import ca.blarg.gdx.graphics.Vertices;
-import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
-import ca.blarg.gdx.tilemap3d.Tile;
-import ca.blarg.gdx.tilemap3d.TileChunk;
-import ca.blarg.gdx.tilemap3d.TileCoord;
-import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class LitChunkVertexGenerator extends ChunkVertexGenerator {
 	final Vector3 tmpOffset = new Vector3();
@@ -63,13 +57,13 @@ public class LitChunkVertexGenerator extends ChunkVertexGenerator {
 			// "look in" for the light source ...
 
 			// get the exact "world/tilemap space" position to grab a potential light source tile from
-			if (!tile.isLargeTile())
+			//if (!tile.isLargeTile())
 				// using the center of this tile as the reference point this helps avoid problems with using the vertex
 				// as the ref point where the vertex is at the very edge of the tile boundaries facing out of the tile
 				// (we could end up inadvertenly skipping over the tile we should get the light from in such a case)
 				tmpLightSourcePos.set(tmpOffset).add(vertex.normal);
-			else
-				throw new NotImplementedException();
+			//else
+			//	throw new NotImplementedException();
 
 			float brightness;
 
