@@ -12,17 +12,28 @@ public class CollisionShapes {
 	static final ObjectMap<String, Model> shapes = new ObjectMap<String, Model>();
 
 	static {
-		shapes.put("cube-1x1x1", buildCube1x1x1());
+		shapes.put("cube-1x1x1", buildBox(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f));
+		shapes.put("cube-2x2x2", buildBox(-0.5f, -0.5f, -0.5f, 1.5f, 1.5f, 1.5f));
+		shapes.put("cube-3x3x3", buildBox(-0.5f, -0.5f, -0.5f, 2.5f, 2.5f, 2.5f));
+
+		shapes.put("cube-0.5x0.5x0.5", buildBox(-0.25f, -0.25f, -0.25f, 0.25f, 0.25f, 0.25f));
+
+		shapes.put("box-0.3x1x0.3", buildBox(-0.15f, -0.5f, -0.15f, 0.15f, 0.5f, 0.15f));
+		shapes.put("box-0.5x1x0.5", buildBox(-0.25f, -0.5f, -0.25f, 0.25f, 0.5f, 0.25f));
+		shapes.put("box-0.7x1x0.7", buildBox(-0.35f, -0.5f, -0.35f, 0.35f, 0.5f, 0.35f));
+
+		shapes.put("box-1x2x1", buildBox(-0.5f, -0.5f, -0.5f, 0.5f, 1.5f, 0.5f));
+		shapes.put("box-0.7x2x0.7", buildBox(-0.35f, -0.5f, -0.35f, 0.35f, 1.5f, 0.35f));
 	}
 
 	public static Model get(String shapeName) {
 		return shapes.get(shapeName);
 	}
 
-	private static Model buildCube1x1x1() {
+	private static Model buildBox(float ax, float ay, float az, float bx, float by, float bz) {
 		modelBuilder.begin();
 		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL10.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
-		addBoxShape(partBuilder, -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f);
+		addBoxShape(partBuilder, ax, ay, az, bx, by, bz);
 		return modelBuilder.end();
 	}
 
@@ -30,14 +41,14 @@ public class CollisionShapes {
 		// TODO: for some reason, ModelBuilder's createBox() creates a box model in a way that BaseModelTileMesh
 		// collects the vertices from it incorrectly. for now, we just manually create a box's vertices/indices ourself
 
-		partBuilder.vertex(ax, by, bz);  // 0
-		partBuilder.vertex(bx, by, bz);  // 1
-		partBuilder.vertex(ax, by, az);  // 2
-		partBuilder.vertex(bx, by, az);  // 3
-		partBuilder.vertex(bx, ay, bz);  // 4
-		partBuilder.vertex(ax, ay, bz);  // 5
-		partBuilder.vertex(bx, ay, az);  // 6
-		partBuilder.vertex(ax, ay, az);  // 7
+		partBuilder.vertex(ax, by, bz);
+		partBuilder.vertex(bx, by, bz);
+		partBuilder.vertex(ax, by, az);
+		partBuilder.vertex(bx, by, az);
+		partBuilder.vertex(bx, ay, bz);
+		partBuilder.vertex(ax, ay, bz);
+		partBuilder.vertex(bx, ay, az);
+		partBuilder.vertex(ax, ay, az);
 
 		// top
 		partBuilder.index((short)0, (short)1, (short)2);
