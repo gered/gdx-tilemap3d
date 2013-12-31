@@ -1,13 +1,13 @@
 package ca.blarg.gdx.tilemap3d;
 
-import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import ca.blarg.gdx.math.SweptSphere;
 import ca.blarg.gdx.math.SweptSphereCollisionTester;
 import ca.blarg.gdx.math.SweptSphereWorldCollisionChecker;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.ObjectSet;
 
 public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldCollisionChecker {
 	static final TileCoord min = new TileCoord();
@@ -20,6 +20,8 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 	public TileMap tileMap;
 
 	public final TileCoord lastCollisionTilePosition = new TileCoord();
+
+	final ObjectSet<Tile> checkedLargeTiles = new ObjectSet<Tile>(32);
 
 	@Override
 	public boolean checkForCollisions(SweptSphere sphere, BoundingBox possibleCollisionArea) {
@@ -44,13 +46,31 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 
 						// only check solid tiles
 						if (tile.isCollideable()) {
+							int worldPosX = x - (int)tile.parentTileOffsetX;
+							int worldPosY = y - (int)tile.parentTileOffsetY;
+							int worldPosZ = z - (int)tile.parentTileOffsetZ;
+
+							// if this is a large tile, get the parent tile and make sure we haven't already checked
+							// for collisions against it
+							if (tile.isLargeTile()) {
+								Tile parentTile;
+								if (tile.isLargeTileRoot())
+									parentTile = tile;
+								else
+									parentTile = tileMap.get(worldPosX, worldPosY, worldPosZ);
+
+								boolean needToCheck = checkedLargeTiles.add(parentTile);
+								if (!needToCheck)
+									continue;  // don't check it again!
+							}
+
 							// check each triangle in this tile's mesh
 							TileMesh mesh = tileMap.tileMeshes.get(tile);
 							Vector3[] vertices = mesh.getCollisionVertices();
 
 							// world position of this tile, will be used to move each
 							// mesh triangle into world space
-							tileWorldPosition.set(x, y, z);
+							tileWorldPosition.set(worldPosX, worldPosY, worldPosZ);
 
 							// also add the global TileMesh offset so the mesh is within
 							// 0,0,0 to 1,1,1 and not -0.5,-0.5,-0.5 to 0.5,0.5,0.5
@@ -95,6 +115,8 @@ public class TileMapSweptSphereCollisionChecker implements SweptSphereWorldColli
 				}
 			}
 		}
+
+		checkedLargeTiles.clear();
 
 		return foundCollision;
 	}
