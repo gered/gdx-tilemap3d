@@ -26,6 +26,10 @@ public class CollisionShapes {
 		shapes.put("box-0.7x2x0.7", buildBox(-0.35f, -0.5f, -0.35f, 0.35f, 1.5f, 0.35f));
 
 		shapes.put("ramp-1x1x1", buildRamp(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f));
+		shapes.put("ramp-2x2x2", buildRamp(-0.5f, -0.5f, -0.5f, 1.5f, 1.5f, 1.5f));
+
+		shapes.put("ramp-2x1x2", buildRamp(-0.5f, -0.5f, -0.5f, 1.5f, 0.5f, 1.5f));
+		shapes.put("ramp-1x0.5x1", buildRamp(-0.5f, -0.25f, -0.5f, 0.5f, 0.25f, 0.5f));
 	}
 
 	public static Model get(String shapeName) {
