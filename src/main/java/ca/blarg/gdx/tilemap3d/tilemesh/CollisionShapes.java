@@ -24,6 +24,8 @@ public class CollisionShapes {
 
 		shapes.put("box-1x2x1", buildBox(-0.5f, -0.5f, -0.5f, 0.5f, 1.5f, 0.5f));
 		shapes.put("box-0.7x2x0.7", buildBox(-0.35f, -0.5f, -0.35f, 0.35f, 1.5f, 0.35f));
+
+		shapes.put("ramp-1x1x1", buildRamp(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f));
 	}
 
 	public static Model get(String shapeName) {
@@ -34,6 +36,13 @@ public class CollisionShapes {
 		modelBuilder.begin();
 		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL10.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
 		addBoxShape(partBuilder, ax, ay, az, bx, by, bz);
+		return modelBuilder.end();
+	}
+
+	private static Model buildRamp(float ax, float ay, float az, float bx, float by, float bz) {
+		modelBuilder.begin();
+		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL10.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
+		addRampShape(partBuilder, ax, ay, az, bx, by, bz);
 		return modelBuilder.end();
 	}
 
@@ -73,5 +82,33 @@ public class CollisionShapes {
 		// right
 		partBuilder.index((short)4, (short)6, (short)1);
 		partBuilder.index((short)6, (short)3, (short)1);
+	}
+
+	private static void addRampShape(MeshPartBuilder partBuilder, float ax, float ay, float az, float bx, float by, float bz) {
+		partBuilder.vertex(ax, by, az);
+		partBuilder.vertex(bx, by, az);
+		partBuilder.vertex(bx, ay, bz);
+		partBuilder.vertex(ax, ay, bz);
+		partBuilder.vertex(bx, ay, az);
+		partBuilder.vertex(ax, ay, az);
+
+		// top (ramp)
+		partBuilder.index((short)3, (short)2, (short)0);
+		partBuilder.index((short)2, (short)1, (short)0);
+
+		// bottom
+		partBuilder.index((short)2, (short)3, (short)4);
+		partBuilder.index((short)3, (short)5, (short)4);
+
+		// front
+		partBuilder.index((short)4, (short)5, (short)1);
+		partBuilder.index((short)5, (short)0, (short)1);
+
+		// left
+		partBuilder.index((short)5, (short)3, (short)0);
+
+		// right
+		partBuilder.index((short)4, (short)1, (short)2);
+
 	}
 }
