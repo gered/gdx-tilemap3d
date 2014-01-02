@@ -1,11 +1,10 @@
 package ca.blarg.gdx.tilemap3d.prefabs;
 
-import ca.blarg.gdx.tilemap3d.TileContainer;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import ca.blarg.gdx.tilemap3d.Tile;
 import ca.blarg.gdx.tilemap3d.TileContainer;
 import ca.blarg.gdx.tilemap3d.TileRawDataContainer;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
 
 public class TilePrefab extends TileContainer implements TileRawDataContainer {
 	public enum Rotation {
@@ -223,11 +222,11 @@ public class TilePrefab extends TileContainer implements TileRawDataContainer {
 
 		if (!this.rotation.equals(rotation))
 			rotate(rotation);
-		if (!((minX + rotationWidth) < destination.getWidth()))
+		if (!((minX + rotationWidth) <= destination.getWidth()))
 			throw new RuntimeException("Destination not large enough.");
-		if (!((minY + height) < destination.getHeight()))
+		if (!((minY + height) <= destination.getHeight()))
 			throw new RuntimeException("Destination not large enough.");
-		if (!((minZ + rotationDepth) < destination.getDepth()))
+		if (!((minZ + rotationDepth) <= destination.getDepth()))
 			throw new RuntimeException("Destination not large enough.");
 
 		for (int y = 0; y < height; ++y)
