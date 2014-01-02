@@ -22,8 +22,17 @@ public class CollisionShapes {
 		shapes.put("box-0.5x1x0.5", buildBox(-0.25f, -0.5f, -0.25f, 0.25f, 0.5f, 0.25f));
 		shapes.put("box-0.7x1x0.7", buildBox(-0.35f, -0.5f, -0.35f, 0.35f, 0.5f, 0.35f));
 
+		shapes.put("box-0.3x1x1", buildBox(-0.15f, -0.5f, -0.5f, 0.15f, 0.5f, 0.5f));
+		shapes.put("box-0.5x1x1", buildBox(-0.25f, -0.5f, -0.5f, 0.25f, 0.5f, 0.5f));
+		shapes.put("box-0.7x1x1", buildBox(-0.35f, -0.5f, -0.5f, 0.35f, 0.5f, 0.5f));
+
+		shapes.put("box-1x1x0.3", buildBox(-0.5f, -0.5f, -0.15f, 0.5f, 0.5f, 0.15f));
+		shapes.put("box-1x1x0.5", buildBox(-0.5f, -0.5f, -0.25f, 0.5f, 0.5f, 0.25f));
+		shapes.put("box-1x1x0.7", buildBox(-0.5f, -0.5f, -0.35f, 0.5f, 0.5f, 0.35f));
+
 		shapes.put("box-1x2x1", buildBox(-0.5f, -0.5f, -0.5f, 0.5f, 1.5f, 0.5f));
 		shapes.put("box-0.7x2x0.7", buildBox(-0.35f, -0.5f, -0.35f, 0.35f, 1.5f, 0.35f));
+		shapes.put("box-2x1x2", buildBox(-0.5f, -0.5f, -0.5f, 1.5f, 0.5f, 1.5f));
 
 		shapes.put("ramp-1x1x1", buildRamp(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f));
 		shapes.put("ramp-2x2x2", buildRamp(-0.5f, -0.5f, -0.5f, 1.5f, 1.5f, 1.5f));
