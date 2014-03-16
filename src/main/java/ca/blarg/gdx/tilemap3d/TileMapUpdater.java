@@ -24,6 +24,10 @@ public class TileMapUpdater implements Runnable {
 		return chunkNeedingVboCreation;
 	}
 
+	public boolean isWaitingForVboCreation() {
+		return waitingForVboCreation;
+	}
+
 	public synchronized void signalDoneVboCreation() {
 		waitingForVboCreation = false;
 	}

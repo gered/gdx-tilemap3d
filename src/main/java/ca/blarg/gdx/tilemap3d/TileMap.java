@@ -167,8 +167,8 @@ public class TileMap extends TileContainer implements Disposable {
 		if (!isUpdating())
 			return true;   // done updating (or we were never updating in the first place ...)
 
-		TileChunk chunkNeedingVboCreation = updater.chunkNeedingVboCreation;
-		if (chunkNeedingVboCreation != null) {
+		if (updater.isWaitingForVboCreation()) {
+			TileChunk chunkNeedingVboCreation = updater.chunkNeedingVboCreation;
 			ChunkVertexGenerator.GeneratedChunkMeshes meshes = vertexGenerator.createMeshFromVertices();
 			chunkNeedingVboCreation.setMeshes(meshes);
 			updater.signalDoneVboCreation();
