@@ -160,6 +160,24 @@ public class TileChunk extends TileContainer implements TileRawDataContainer, Re
 			alphaMesh = null;
 	}
 
+	public void setMeshes(ChunkVertexGenerator.GeneratedChunkMeshes meshes) {
+		meshBounds.clr();
+
+		if (meshes.opaqueMesh.getNumVertices() > 0) {
+			opaqueMesh = meshes.opaqueMesh;
+			opaqueMesh.calculateBoundingBox(tmpBounds);
+			meshBounds.ext(tmpBounds);
+		} else
+			opaqueMesh = null;
+
+		if (meshes.alphaMesh.getNumVertices() > 0) {
+			alphaMesh = meshes.alphaMesh;
+			alphaMesh.calculateBoundingBox(tmpBounds);
+			meshBounds.ext(tmpBounds);
+		} else
+			alphaMesh = null;
+	}
+
 	public Tile getWithinSelfOrNeighbour(int x, int y, int z) {
 		int checkX = x + this.x;
 		int checkY = y + this.y;
