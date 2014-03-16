@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class TileMeshCollectionLoader {
+public final class TileMeshCollectionJsonLoader {
 	public static TileMeshCollection load(String configFile, TextureAtlas atlas) {
 		return load(Gdx.files.internal(configFile), atlas);
 	}

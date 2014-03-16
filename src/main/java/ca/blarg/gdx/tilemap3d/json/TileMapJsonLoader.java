@@ -1,22 +1,21 @@
 package ca.blarg.gdx.tilemap3d.json;
 
-import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Base64Coder;
-import com.badlogic.gdx.utils.Json;
 import ca.blarg.gdx.Strings;
 import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
 import ca.blarg.gdx.tilemap3d.TileChunk;
 import ca.blarg.gdx.tilemap3d.TileMap;
 import ca.blarg.gdx.tilemap3d.lighting.TileMapLighter;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.badlogic.gdx.utils.Json;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-public class TileMapLoader {
+public class TileMapJsonLoader {
 	public static TileMap load(String mapFile, TileMeshCollection tileMeshes) {
 		return load(Gdx.files.internal(mapFile), tileMeshes);
 	}

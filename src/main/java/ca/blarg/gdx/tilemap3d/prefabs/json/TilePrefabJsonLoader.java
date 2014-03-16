@@ -10,7 +10,7 @@ import ca.blarg.gdx.tilemap3d.json.TileDataSerializer;
 
 import java.nio.ByteBuffer;
 
-public class TilePrefabLoader {
+public class TilePrefabJsonLoader {
 	public static TilePrefab load(String prefabFile) {
 		return load(Gdx.files.internal(prefabFile));
 	}
