@@ -31,6 +31,7 @@ public class TileMapUpdater implements Runnable {
 	@Override
 	public void run() {
 		isRunning = true;
+		chunkNeedingVboCreation = null;
 
 		TileChunk[] chunks = tileMap.getChunks();
 

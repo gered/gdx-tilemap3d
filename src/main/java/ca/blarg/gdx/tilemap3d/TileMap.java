@@ -14,6 +14,8 @@ public class TileMap extends TileContainer implements Disposable {
 	final BoundingBox tmpBounds = new BoundingBox();
 	final Vector3 tmpPosition = new Vector3();
 
+	TileMapUpdater updater;
+
 	public final int chunkWidth;
 	public final int chunkHeight;
 	public final int chunkDepth;
@@ -88,6 +90,14 @@ public class TileMap extends TileContainer implements Disposable {
 		return bounds;
 	}
 
+	public float getUpdateProgress() {
+		return updater.currentProgress();
+	}
+
+	public boolean isUpdating() {
+		return updater.isUpdating();
+	}
+
 	public TileMap(
 			int chunkWidth, int chunkHeight, int chunkDepth,
 	        int widthInChunks, int heightInChunks, int depthInChunks,
@@ -137,6 +147,8 @@ public class TileMap extends TileContainer implements Disposable {
 		bounds = new BoundingBox();
 		bounds.min.set(Vector3.Zero);
 		bounds.max.set(getWidth(), getHeight(), getDepth());
+
+		updater = new TileMapUpdater(this);
 	}
 
 	public void updateVertices() {
@@ -144,7 +156,31 @@ public class TileMap extends TileContainer implements Disposable {
 			chunks[i].updateVertices(vertexGenerator);
 	}
 
+	public void beginUpdateVerticesAsync() {
+		if (isUpdating())
+			throw new IllegalStateException("Async vertices update for this TileMap is currently underway.");
+
+		(new Thread(updater)).start();
+	}
+
+	public boolean updateVerticesAsync() {
+		if (!isUpdating())
+			return true;   // done updating (or we were never updating in the first place ...)
+
+		TileChunk chunkNeedingVboCreation = updater.chunkNeedingVboCreation;
+		if (chunkNeedingVboCreation != null) {
+			ChunkVertexGenerator.GeneratedChunkMeshes meshes = vertexGenerator.createMeshFromVertices();
+			chunkNeedingVboCreation.setMeshes(meshes);
+			updater.signalDoneVboCreation();
+		}
+
+		return false;
+	}
+
 	public void updateLighting() {
+		if (isUpdating())
+			throw new UnsupportedOperationException("Cannot update a TileMap until the current update operation is complete.");
+
 		if (lighter != null)
 			lighter.light(this);
 	}
