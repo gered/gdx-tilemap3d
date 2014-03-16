@@ -27,20 +27,29 @@ public class ChunkVertexGenerator {
 	final Color tmpColor = new Color();
 	final Vector3 tmpOffset = new Vector3();
 
-	public GeneratedChunkMeshes generate(TileChunk chunk) {
+	boolean areVerticesGenerated;
+
+	// for async generation of TileMap VBO's... generateVertices() can be called on another thread, but
+	// createMeshFromVertices() must be called on the render thread (the OpenGL context's thread) because
+	// it is creating VBOs. thus, why these two methods are now split up from how they were before.
+
+	public void generateVertices(TileChunk chunk) {
+		if (areVerticesGenerated)
+			throw new IllegalStateException("Previously generated vertices have not yet been turned into meshes.");
+
 		TileMap tileMap = chunk.tileMap;
 
 		builder.begin(
-				VertexAttributes.Usage.Position |
-				VertexAttributes.Usage.Color |
-				VertexAttributes.Usage.Normal |
-				VertexAttributes.Usage.TextureCoordinates
+			VertexAttributes.Usage.Position |
+			VertexAttributes.Usage.Color |
+			VertexAttributes.Usage.Normal |
+			VertexAttributes.Usage.TextureCoordinates
 		);
 		alphaBuilder.begin(
-				VertexAttributes.Usage.Position |
-				VertexAttributes.Usage.Color |
-				VertexAttributes.Usage.Normal |
-				VertexAttributes.Usage.TextureCoordinates
+			VertexAttributes.Usage.Position |
+			VertexAttributes.Usage.Color |
+			VertexAttributes.Usage.Normal |
+			VertexAttributes.Usage.TextureCoordinates
 		);
 
 		for (int y = 0; y < chunk.getHeight(); ++y) {
@@ -79,10 +88,27 @@ public class ChunkVertexGenerator {
 			}
 		}
 
+		areVerticesGenerated = true;
+	}
+
+	public GeneratedChunkMeshes createMeshFromVertices() {
+		if (!areVerticesGenerated)
+			throw new IllegalStateException("Vertices have not yet been generated. Cannot create a mesh.");
+
 		GeneratedChunkMeshes output = new GeneratedChunkMeshes();
 		output.opaqueMesh = builder.end();
 		output.alphaMesh = alphaBuilder.end();
+
+		areVerticesGenerated = false;
+
 		return output;
+	}
+
+	// if you're not doing async map generation, then you can (and probably should) still call this as before
+
+	public GeneratedChunkMeshes generate(TileChunk chunk) {
+		generateVertices(chunk);
+		return createMeshFromVertices();
 	}
 
 	private void handleCubeMesh(int x, int y, int z, Tile tile, TileChunk chunk, CubeTileMesh mesh, TileCoord tileMapPosition, Matrix4 transform, Color color) {
