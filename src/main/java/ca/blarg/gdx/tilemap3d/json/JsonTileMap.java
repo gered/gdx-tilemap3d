@@ -10,5 +10,6 @@ public class JsonTileMap {
 	public int heightInChunks;
 	public int depthInChunks;
 	public String lightingMode;
+	public String tileMeshes;
 	public ArrayList<String> chunks;
 }
