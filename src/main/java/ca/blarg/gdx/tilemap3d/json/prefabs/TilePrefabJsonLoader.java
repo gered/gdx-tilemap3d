@@ -1,12 +1,13 @@
-package ca.blarg.gdx.tilemap3d.prefabs.json;
+package ca.blarg.gdx.tilemap3d.json.prefabs;
 
+import ca.blarg.gdx.tilemap3d.json.prefabs.JsonTilePrefab;
 import ca.blarg.gdx.tilemap3d.prefabs.TilePrefab;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import ca.blarg.gdx.Strings;
-import ca.blarg.gdx.tilemap3d.json.TileDataSerializer;
+import ca.blarg.gdx.tilemap3d.json.tilemap.TileDataSerializer;
 
 import java.nio.ByteBuffer;
 

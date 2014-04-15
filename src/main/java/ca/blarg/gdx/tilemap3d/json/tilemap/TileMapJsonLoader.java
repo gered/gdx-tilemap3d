@@ -1,9 +1,11 @@
-package ca.blarg.gdx.tilemap3d.json;
+package ca.blarg.gdx.tilemap3d.json.tilemap;
 
 import ca.blarg.gdx.Strings;
 import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
 import ca.blarg.gdx.tilemap3d.TileChunk;
 import ca.blarg.gdx.tilemap3d.TileMap;
+import ca.blarg.gdx.tilemap3d.json.tilemap.JsonTileMap;
+import ca.blarg.gdx.tilemap3d.json.tilemap.TileDataSerializer;
 import ca.blarg.gdx.tilemap3d.lighting.TileMapLighter;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
 import com.badlogic.gdx.Gdx;

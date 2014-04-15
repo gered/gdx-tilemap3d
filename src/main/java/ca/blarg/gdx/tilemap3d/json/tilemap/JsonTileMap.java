@@ -1,4 +1,4 @@
-package ca.blarg.gdx.tilemap3d.json;
+package ca.blarg.gdx.tilemap3d.json.tilemap;
 
 import java.util.ArrayList;
 
