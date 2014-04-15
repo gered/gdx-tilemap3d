@@ -12,5 +12,6 @@ public class JsonMaterialMapping {
 		public float maxV;
 	}
 
+	public String textureAtlas;
 	public ArrayList<Material> materials;
 }
