@@ -1,9 +1,7 @@
 package ca.blarg.gdx.tilemap3d.json.tilemesh;
 
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
-import ca.blarg.gdx.loaders.textureatlas.TextureAtlasJsonLoader;
 import ca.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
@@ -14,19 +12,11 @@ public class MaterialTileMappingJsonLoader {
 		return json.fromJson(JsonMaterialMapping.class, file);
 	}
 
-	public static MaterialTileMapping create(JsonMaterialMapping definition) {
-		return create(definition, null);
-	}
-
 	public static MaterialTileMapping create(JsonMaterialMapping definition, AssetManager assetManager) {
 		if (definition.materials == null || definition.materials.size() == 0)
 			throw new RuntimeException("No material mappings defined.");
 
-		TextureAtlas atlas;
-		if (assetManager != null)
-			atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
-		else
-			atlas = TextureAtlasJsonLoader.loadAndCreate(Gdx.files.internal(definition.textureAtlas));
+		TextureAtlas atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
 
 		MaterialTileMapping materialMapping = new MaterialTileMapping();
 		for (int i = 0; i < definition.materials.size(); ++i) {
@@ -38,11 +28,6 @@ public class MaterialTileMappingJsonLoader {
 		}
 
 		return materialMapping;
-	}
-
-	public static MaterialTileMapping loadAndCreate(FileHandle file) {
-		JsonMaterialMapping definition = load(file);
-		return create(definition);
 	}
 
 	public static MaterialTileMapping loadAndCreate(FileHandle file, AssetManager assetManager) {

@@ -2,28 +2,19 @@ package ca.blarg.gdx.tilemap3d.json.tilemesh;
 
 import ca.blarg.gdx.Bitfield;
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
-import ca.blarg.gdx.loaders.textureatlas.TextureAtlasJsonLoader;
 import ca.blarg.gdx.tilemap3d.tilemesh.*;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.ModelLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
 
 public class TileMeshJsonLoader {
 	public static JsonTileMesh load(FileHandle file) {
 		Json json = new Json();
 		return json.fromJson(JsonTileMesh.class, file);
-	}
-
-	public static TileMesh create(JsonTileMesh definition) {
-		return create(definition, null);
 	}
 
 	public static TileMesh create(JsonTileMesh definition, AssetManager assetManager) {
@@ -36,23 +27,12 @@ public class TileMeshJsonLoader {
 		if (definition.collisionModel != null && definition.collisionShape != null)
 			throw new RuntimeException("collisionModel and collisionShape cannot both be set.");
 
-		ModelLoader loader = null;
-		if (assetManager == null)
-			loader = new G3dModelLoader(new JsonReader());
-
 		MaterialTileMapping materials = null;
 		TextureAtlas atlas = null;
-		if (assetManager != null) {
-			if (definition.materials != null)
-				materials = assetManager.get(definition.materials, MaterialTileMapping.class);
-			else if (definition.textureAtlas != null)
-				atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
-		} else {
-			if (definition.materials != null)
-				materials = MaterialTileMappingJsonLoader.loadAndCreate(Gdx.files.internal(definition.materials));
-			else if (definition.textureAtlas != null)
-				atlas = TextureAtlasJsonLoader.loadAndCreate(Gdx.files.internal(definition.textureAtlas));
-		}
+		if (definition.materials != null)
+			materials = assetManager.get(definition.materials, MaterialTileMapping.class);
+		else if (definition.textureAtlas != null)
+			atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
 
 		boolean isCube = definition.cube;
 		TextureRegion texture = null;
@@ -149,19 +129,12 @@ public class TileMeshJsonLoader {
 				return new CubeTileMesh(topTexture, bottomTexture, frontTexture, backTexture, leftTexture, rightTexture, faces, opaqueSides, lightValue, alpha, translucency, color);
 
 		} else if (definition.model != null) {
-			if (assetManager != null)
-				model = assetManager.get(definition.model, Model.class);
-			else
-				model = loader.loadModel(Gdx.files.internal(definition.model));
-
+			model = assetManager.get(definition.model, Model.class);
 			collisionModel = model; // default is to use the same model
 
 			if (definition.collisionModel != null) {
 				// override with a specific collision model
-				if (assetManager != null)
-					collisionModel = assetManager.get(definition.collisionModel, Model.class);
-				else
-					collisionModel = loader.loadModel(Gdx.files.internal(definition.collisionModel));
+				collisionModel = assetManager.get(definition.collisionModel, Model.class);
 
 			} else if (definition.collisionShape != null) {
 				collisionModel = CollisionShapes.get(definition.collisionShape);
@@ -180,11 +153,7 @@ public class TileMeshJsonLoader {
 
 			for (int j = 0; j < numModels; ++j) {
 				JsonTileMesh.SubModels subModelDef = definition.models.get(j);
-
-				if (assetManager != null)
-					submodels[j] = assetManager.get(subModelDef.submodel, Model.class);
-				else
-					submodels[j] = loader.loadModel(Gdx.files.internal(subModelDef.submodel));
+				submodels[j] = assetManager.get(subModelDef.submodel, Model.class);
 
 				if (subModelDef.color == null)
 					colors[j] = new Color(Color.WHITE);
@@ -199,10 +168,7 @@ public class TileMeshJsonLoader {
 
 			if (definition.collisionModel != null) {
 				//override with a specific collision model
-				if (assetManager != null)
-					collisionModel = assetManager.get(definition.collisionModel, Model.class);
-				else
-					collisionModel = loader.loadModel(Gdx.files.internal(definition.collisionModel));
+				collisionModel = assetManager.get(definition.collisionModel, Model.class);
 			}
 			if (definition.collisionShape != null) {
 				collisionModel = CollisionShapes.get(definition.collisionShape);
@@ -214,5 +180,10 @@ public class TileMeshJsonLoader {
 
 		} else
 			throw new RuntimeException("Unrecognized tile mesh type.");
+	}
+
+	public static TileMesh loadAndCreate(FileHandle file, AssetManager assetManager) {
+		JsonTileMesh definition = load(file);
+		return create(definition, assetManager);
 	}
 }
