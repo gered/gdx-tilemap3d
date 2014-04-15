@@ -7,7 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 
-public final class TileMeshCollectionJsonLoader {
+class TileMeshCollectionJsonLoader {
 	public static JsonTileMeshCollection load(FileHandle file) {
 		Json json = new Json();
 		return json.fromJson(JsonTileMeshCollection.class, file);

@@ -6,7 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 
-public class MaterialTileMappingJsonLoader {
+class MaterialTileMappingJsonLoader {
 	public static JsonMaterialMapping load(FileHandle file) {
 		Json json = new Json();
 		return json.fromJson(JsonMaterialMapping.class, file);
@@ -28,10 +28,5 @@ public class MaterialTileMappingJsonLoader {
 		}
 
 		return materialMapping;
-	}
-
-	public static MaterialTileMapping loadAndCreate(FileHandle file, AssetManager assetManager) {
-		JsonMaterialMapping definition = load(file);
-		return create(definition, assetManager);
 	}
 }

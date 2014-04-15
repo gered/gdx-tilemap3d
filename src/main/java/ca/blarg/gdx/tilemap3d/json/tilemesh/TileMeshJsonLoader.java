@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 
-public class TileMeshJsonLoader {
+class TileMeshJsonLoader {
 	public static JsonTileMesh load(FileHandle file) {
 		Json json = new Json();
 		return json.fromJson(JsonTileMesh.class, file);
@@ -180,10 +180,5 @@ public class TileMeshJsonLoader {
 
 		} else
 			throw new RuntimeException("Unrecognized tile mesh type.");
-	}
-
-	public static TileMesh loadAndCreate(FileHandle file, AssetManager assetManager) {
-		JsonTileMesh definition = load(file);
-		return create(definition, assetManager);
 	}
 }

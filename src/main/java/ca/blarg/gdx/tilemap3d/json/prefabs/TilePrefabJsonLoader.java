@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Json;
 
 import java.nio.ByteBuffer;
 
-public class TilePrefabJsonLoader {
+class TilePrefabJsonLoader {
 	public static JsonTilePrefab load(FileHandle file) {
 		Json json = new Json();
 		return json.fromJson(JsonTilePrefab.class, file);

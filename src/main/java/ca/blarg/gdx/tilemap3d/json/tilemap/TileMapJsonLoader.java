@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Json;
 
 import java.nio.ByteBuffer;
 
-public class TileMapJsonLoader {
+class TileMapJsonLoader {
 	public static JsonTileMap load(FileHandle file) {
 		Json json = new Json();
 		return json.fromJson(JsonTileMap.class, file);
