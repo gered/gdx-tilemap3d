@@ -1,4 +1,4 @@
-package ca.blarg.gdx.tilemap3d.json.prefabs;
+package ca.blarg.gdx.tilemap3d.assets.prefabs;
 
 import ca.blarg.gdx.tilemap3d.prefabs.TilePrefab;
 import com.badlogic.gdx.assets.AssetDescriptor;

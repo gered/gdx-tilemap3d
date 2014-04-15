@@ -1,4 +1,4 @@
-package ca.blarg.gdx.tilemap3d.json.tilemesh;
+package ca.blarg.gdx.tilemap3d.assets.tilemesh;
 
 import java.util.ArrayList;
 

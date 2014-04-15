@@ -1,4 +1,4 @@
-package ca.blarg.gdx.tilemap3d.json.prefabs;
+package ca.blarg.gdx.tilemap3d.assets.prefabs;
 
 public class JsonTilePrefab {
 	public int width;

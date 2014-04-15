@@ -1,4 +1,4 @@
-package ca.blarg.gdx.tilemap3d.json.tilemap;
+package ca.blarg.gdx.tilemap3d.assets.tilemap;
 
 import ca.blarg.gdx.tilemap3d.Tile;
 import ca.blarg.gdx.tilemap3d.TileRawDataContainer;

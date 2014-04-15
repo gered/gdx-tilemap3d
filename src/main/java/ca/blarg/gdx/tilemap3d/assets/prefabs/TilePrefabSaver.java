@@ -1,6 +1,6 @@
-package ca.blarg.gdx.tilemap3d.json.prefabs;
+package ca.blarg.gdx.tilemap3d.assets.prefabs;
 
-import ca.blarg.gdx.tilemap3d.json.tilemap.TileDataSerializer;
+import ca.blarg.gdx.tilemap3d.assets.tilemap.TileDataSerializer;
 import ca.blarg.gdx.tilemap3d.prefabs.TilePrefab;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
