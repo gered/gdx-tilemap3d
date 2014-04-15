@@ -20,19 +20,17 @@ class TileMeshJsonLoader {
 	public static TileMesh create(JsonTileMesh definition, AssetManager assetManager) {
 		if (!definition.cube && definition.model == null && definition.models == null)
 			throw new RuntimeException("One of cube, model or models must be specified for each tile.");
-		if (definition.materials != null && definition.textureAtlas != null)
-			throw new RuntimeException("materials and textureAtlas cannot both be set.");
-		if (definition.model != null && definition.materials == null)
-			throw new RuntimeException("Missing materials section but using models to define tiles. When using models, a materials section to map model textures to texture atlas regions is required.");
+		if (definition.textureAtlas == null)
+			throw new RuntimeException("A texture atlas must be specified.");
 		if (definition.collisionModel != null && definition.collisionShape != null)
 			throw new RuntimeException("collisionModel and collisionShape cannot both be set.");
 
-		MaterialTileMapping materials = null;
 		TextureAtlas atlas = null;
-		if (definition.materials != null)
-			materials = assetManager.get(definition.materials, MaterialTileMapping.class);
-		else if (definition.textureAtlas != null)
+		if (definition.textureAtlas != null)
 			atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
+
+		if (!atlas.materialTileMapping.hasMappings() && !definition.cube)
+			throw new RuntimeException("No material mappings defined for non-cube tile mesh. Material mappings needed to map from source model(s) textures to texture atlas tiles.");
 
 		boolean isCube = definition.cube;
 		TextureRegion texture = null;
@@ -142,7 +140,7 @@ class TileMeshJsonLoader {
 					throw new RuntimeException("collisionShape not recognized.");
 			}
 
-			return new ModelTileMesh(model, collisionModel, materials, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
+			return new ModelTileMesh(model, collisionModel, atlas.materialTileMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
 
 		} else if (definition.models != null) {
 			int numModels = definition.models.size();
@@ -176,7 +174,7 @@ class TileMeshJsonLoader {
 					throw new RuntimeException("collisionShape not recognized.");
 			}
 
-			return new MultiModelTileMesh(submodels, colors, scaleToSizes, positionOffsets, collisionModel, materials, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
+			return new MultiModelTileMesh(submodels, colors, scaleToSizes, positionOffsets, collisionModel, atlas.materialTileMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
 
 		} else
 			throw new RuntimeException("Unrecognized tile mesh type.");

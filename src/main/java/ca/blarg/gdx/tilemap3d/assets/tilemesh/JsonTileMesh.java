@@ -22,7 +22,6 @@ public class JsonTileMesh {
 		public Vector3 positionOffset;
 	}
 
-	public String materials;
 	public String textureAtlas;
 	public boolean cube;
 	public CubeTextures textures;

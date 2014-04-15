@@ -1,7 +1,6 @@
 package ca.blarg.gdx.tilemap3d.assets.tilemesh;
 
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
-import ca.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
@@ -29,8 +28,6 @@ public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLo
 		definition = TileMeshJsonLoader.load(file);
 		Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
 
-		if (definition.materials != null)
-			deps.add(new AssetDescriptor(definition.materials, MaterialTileMapping.class));
 		if (definition.textureAtlas != null)
 			deps.add(new AssetDescriptor(definition.textureAtlas, TextureAtlas.class));
 

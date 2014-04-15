@@ -1,5 +1,9 @@
 package ca.blarg.gdx.tilemap3d.tilemesh;
 
+import ca.blarg.gdx.graphics.Vertices;
+import ca.blarg.gdx.graphics.atlas.MaterialTileMapping;
+import ca.blarg.gdx.graphics.atlas.TextureAtlas;
+import ca.blarg.gdx.math.MathHelpers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -11,9 +15,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
-import ca.blarg.gdx.graphics.Vertices;
-import ca.blarg.gdx.graphics.atlas.TextureAtlas;
-import ca.blarg.gdx.math.MathHelpers;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;

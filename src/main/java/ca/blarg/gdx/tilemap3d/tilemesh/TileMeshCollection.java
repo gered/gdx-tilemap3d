@@ -1,6 +1,7 @@
 package ca.blarg.gdx.tilemap3d.tilemesh;
 
 import ca.blarg.gdx.Bitfield;
+import ca.blarg.gdx.graphics.atlas.MaterialTileMapping;
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
 import ca.blarg.gdx.tilemap3d.Tile;
 import com.badlogic.gdx.graphics.Color;
