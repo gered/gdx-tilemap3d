@@ -13,6 +13,7 @@ public class TilePrefabLoader extends AsynchronousAssetLoader<TilePrefab, TilePr
 	public static class TilePrefabParameter extends AssetLoaderParameters<TilePrefab> {
 	}
 
+	JsonTilePrefab definition;
 	TilePrefab prefab;
 
 	public TilePrefabLoader(FileHandleResolver resolver) {
@@ -21,12 +22,13 @@ public class TilePrefabLoader extends AsynchronousAssetLoader<TilePrefab, TilePr
 
 	@Override
 	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, TilePrefabParameter parameter) {
+		definition = TilePrefabJsonLoader.load(file);
 		return null;
 	}
 
 	@Override
 	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TilePrefabParameter parameter) {
-		prefab = TilePrefabJsonLoader.load(file);
+		prefab = TilePrefabJsonLoader.create(definition, manager);
 	}
 
 	@Override
