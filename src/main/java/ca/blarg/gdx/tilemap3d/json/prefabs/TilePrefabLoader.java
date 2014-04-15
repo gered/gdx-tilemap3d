@@ -9,8 +9,8 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 
-public class TilePrefabLoader extends AsynchronousAssetLoader<TilePrefab, TilePrefabLoader.TilePrefabParameter> {
-	public static class TilePrefabParameter extends AssetLoaderParameters<TilePrefab> {
+public class TilePrefabLoader extends AsynchronousAssetLoader<TilePrefab, TilePrefabLoader.TilePrefabParameters> {
+	public static class TilePrefabParameters extends AssetLoaderParameters<TilePrefab> {
 	}
 
 	JsonTilePrefab definition;
@@ -21,18 +21,18 @@ public class TilePrefabLoader extends AsynchronousAssetLoader<TilePrefab, TilePr
 	}
 
 	@Override
-	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, TilePrefabParameter parameter) {
+	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, TilePrefabParameters parameter) {
 		definition = TilePrefabJsonLoader.load(file);
 		return null;
 	}
 
 	@Override
-	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TilePrefabParameter parameter) {
+	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TilePrefabParameters parameter) {
 		prefab = TilePrefabJsonLoader.create(definition, manager);
 	}
 
 	@Override
-	public TilePrefab loadSync(AssetManager manager, String fileName, FileHandle file, TilePrefabParameter parameter) {
+	public TilePrefab loadSync(AssetManager manager, String fileName, FileHandle file, TilePrefabParameters parameter) {
 		return prefab;
 	}
 }

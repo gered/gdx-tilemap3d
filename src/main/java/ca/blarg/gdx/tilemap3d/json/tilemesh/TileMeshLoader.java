@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.utils.Array;
 
 @SuppressWarnings("unchecked")
-public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLoader.TileMeshParameter> {
-	public static class TileMeshParameter extends AssetLoaderParameters<TileMesh> {
+public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLoader.TileMeshParameters> {
+	public static class TileMeshParameters extends AssetLoaderParameters<TileMesh> {
 	}
 
 	public TileMeshLoader(FileHandleResolver resolver) {
@@ -25,7 +25,7 @@ public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLo
 	TileMesh mesh;
 
 	@Override
-	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, TileMeshParameter parameter) {
+	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, TileMeshParameters parameter) {
 		definition = TileMeshJsonLoader.load(file);
 		Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
 
@@ -50,12 +50,12 @@ public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLo
 	}
 
 	@Override
-	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TileMeshParameter parameter) {
+	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TileMeshParameters parameter) {
 		mesh = TileMeshJsonLoader.create(definition, manager);
 	}
 
 	@Override
-	public TileMesh loadSync(AssetManager manager, String fileName, FileHandle file, TileMeshParameter parameter) {
+	public TileMesh loadSync(AssetManager manager, String fileName, FileHandle file, TileMeshParameters parameter) {
 		return mesh;
 	}
 }

@@ -11,8 +11,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 
 @SuppressWarnings("unchecked")
-public class MaterialTileMappingLoader extends AsynchronousAssetLoader<MaterialTileMapping, MaterialTileMappingLoader.MaterialTileMappingParameter> {
-	public static class MaterialTileMappingParameter extends AssetLoaderParameters<MaterialTileMapping> {
+public class MaterialTileMappingLoader extends AsynchronousAssetLoader<MaterialTileMapping, MaterialTileMappingLoader.MaterialTileMappingParameters> {
+	public static class MaterialTileMappingParameters extends AssetLoaderParameters<MaterialTileMapping> {
 	}
 
 	public MaterialTileMappingLoader(FileHandleResolver resolver) {
@@ -23,7 +23,7 @@ public class MaterialTileMappingLoader extends AsynchronousAssetLoader<MaterialT
 	MaterialTileMapping mapping;
 
 	@Override
-	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, MaterialTileMappingParameter parameter) {
+	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, MaterialTileMappingParameters parameter) {
 		definition = MaterialTileMappingJsonLoader.load(file);
 		Array<AssetDescriptor> deps = new Array<AssetDescriptor>();
 		deps.add(new AssetDescriptor(definition.textureAtlas, TextureAtlas.class));
@@ -31,12 +31,12 @@ public class MaterialTileMappingLoader extends AsynchronousAssetLoader<MaterialT
 	}
 
 	@Override
-	public void loadAsync(AssetManager manager, String fileName, FileHandle file, MaterialTileMappingParameter parameter) {
+	public void loadAsync(AssetManager manager, String fileName, FileHandle file, MaterialTileMappingParameters parameter) {
 		mapping = MaterialTileMappingJsonLoader.create(definition, manager);
 	}
 
 	@Override
-	public MaterialTileMapping loadSync(AssetManager manager, String fileName, FileHandle file, MaterialTileMappingParameter parameter) {
+	public MaterialTileMapping loadSync(AssetManager manager, String fileName, FileHandle file, MaterialTileMappingParameters parameter) {
 		return mapping;
 	}
 }
