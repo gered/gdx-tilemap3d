@@ -5,13 +5,29 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
-public class JsonTileDefinition {
+public class JsonTileMesh {
+	public class CubeTextures {
+		public int top;
+		public int bottom;
+		public int front;
+		public int back;
+		public int left;
+		public int right;
+	}
+
+	public class SubModels {
+		public String submodel;
+		public Color color;
+		public Vector3 scaleToSize;
+		public Vector3 positionOffset;
+	}
+
 	public boolean cube;
-	public JsonCubeTextures textures;
+	public CubeTextures textures;
 	public int texture;
 	public ArrayList<String> faces;
 	public String model;
-	public ArrayList<JsonTileSubModels> models;
+	public ArrayList<SubModels> models;
 	public String collisionModel;
 	public String collisionShape;
 	public ArrayList<String> opaqueSides;

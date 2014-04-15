@@ -56,7 +56,7 @@ public final class TileMeshCollectionJsonLoader {
 		ModelLoader loader = new G3dModelLoader(new JsonReader());
 
 		for (int i = 0; i < config.tiles.size(); ++i) {
-			JsonTileDefinition tileDef = config.tiles.get(i);
+			JsonTileMesh tileDef = config.tiles.get(i);
 
 			if (!tileDef.cube && tileDef.model == null && tileDef.models == null)
 				throw new RuntimeException("One of cube, model, or models must be specified for each tile.");
