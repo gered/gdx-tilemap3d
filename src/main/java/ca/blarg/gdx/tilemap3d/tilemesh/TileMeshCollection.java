@@ -1,14 +1,13 @@
 package ca.blarg.gdx.tilemap3d.tilemesh;
 
+import ca.blarg.gdx.Bitfield;
+import ca.blarg.gdx.graphics.atlas.TextureAtlas;
 import ca.blarg.gdx.tilemap3d.Tile;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import ca.blarg.gdx.Bitfield;
-import ca.blarg.gdx.graphics.atlas.TextureAtlas;
-import ca.blarg.gdx.tilemap3d.Tile;
 
 public class TileMeshCollection {
 	public final TextureAtlas atlas;
@@ -30,7 +29,7 @@ public class TileMeshCollection {
 		addMesh(null);
 	}
 
-	private int addMesh(TileMesh mesh) {
+	public int addMesh(TileMesh mesh) {
 		meshes.add(mesh);
 		return meshes.size - 1;
 	}
