@@ -1,5 +1,6 @@
 package ca.blarg.gdx.tilemap3d.assets.tilemesh;
 
+import ca.blarg.gdx.assets.AssetLoadingException;
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
 import ca.blarg.gdx.tilemap3d.tilemesh.MaterialTileMapping;
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,9 +13,11 @@ class MaterialTileMappingJsonLoader {
 		return json.fromJson(JsonMaterialMapping.class, file);
 	}
 
-	public static MaterialTileMapping create(JsonMaterialMapping definition, AssetManager assetManager) {
+	public static MaterialTileMapping create(FileHandle file, JsonMaterialMapping definition, AssetManager assetManager) {
 		if (definition.materials == null || definition.materials.size() == 0)
-			throw new RuntimeException("No material mappings defined.");
+			throw new AssetLoadingException(file.path(), "No material mappings defined.");
+		if (definition.textureAtlas == null)
+			throw new AssetLoadingException(file.path(), "No texture atlas specified.");
 
 		TextureAtlas atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
 

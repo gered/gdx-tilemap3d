@@ -32,7 +32,7 @@ public class MaterialTileMappingLoader extends AsynchronousAssetLoader<MaterialT
 
 	@Override
 	public void loadAsync(AssetManager manager, String fileName, FileHandle file, MaterialTileMappingParameters parameter) {
-		mapping = MaterialTileMappingJsonLoader.create(definition, manager);
+		mapping = MaterialTileMappingJsonLoader.create(file, definition, manager);
 	}
 
 	@Override

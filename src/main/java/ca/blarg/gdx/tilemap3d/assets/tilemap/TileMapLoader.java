@@ -32,7 +32,7 @@ public class TileMapLoader extends AsynchronousAssetLoader<TileMap, TileMapLoade
 
 	@Override
 	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TileMapParameters parameter) {
-		map = TileMapJsonLoader.create(definition, manager);
+		map = TileMapJsonLoader.create(file, definition, manager);
 	}
 
 	@Override

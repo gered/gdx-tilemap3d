@@ -28,7 +28,7 @@ public class TilePrefabLoader extends AsynchronousAssetLoader<TilePrefab, TilePr
 
 	@Override
 	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TilePrefabParameters parameter) {
-		prefab = TilePrefabJsonLoader.create(definition, manager);
+		prefab = TilePrefabJsonLoader.create(file, definition, manager);
 	}
 
 	@Override

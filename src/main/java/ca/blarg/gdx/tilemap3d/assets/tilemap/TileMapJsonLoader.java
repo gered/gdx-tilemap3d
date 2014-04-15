@@ -1,6 +1,7 @@
 package ca.blarg.gdx.tilemap3d.assets.tilemap;
 
 import ca.blarg.gdx.Strings;
+import ca.blarg.gdx.assets.AssetLoadingException;
 import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
 import ca.blarg.gdx.tilemap3d.TileChunk;
 import ca.blarg.gdx.tilemap3d.TileMap;
@@ -22,14 +23,14 @@ class TileMapJsonLoader {
 		return json.fromJson(JsonTileMap.class, file);
 	}
 
-	public static TileMap create(JsonTileMap definition, AssetManager assetManager) {
+	public static TileMap create(FileHandle file, JsonTileMap definition, AssetManager assetManager) {
 		if (definition.chunks == null || definition.chunks.size() == 0)
-			throw new RuntimeException("Invalid map: no chunks.");
+			throw new AssetLoadingException(file.path(), "No chunks.");
 		int numChunks = (definition.widthInChunks * definition.heightInChunks * definition.depthInChunks);
 		if (definition.chunks.size() != numChunks)
-			throw new RuntimeException("Inconsistent map dimensions and number of chunks.");
+			throw new AssetLoadingException(file.path(), "Inconsistent map dimensions and number of chunks.");
 		if (definition.tileMeshes == null)
-			throw new RuntimeException("No tile mesh collection specified.");
+			throw new AssetLoadingException(file.path(), "No tile mesh collection specified.");
 
 		TileMeshCollection tileMeshes = assetManager.get(definition.tileMeshes, TileMeshCollection.class);
 
@@ -46,7 +47,7 @@ class TileMapJsonLoader {
 			chunkVertexGenerator = new LitChunkVertexGenerator();
 			lighter = new LightSpreadingTileMapLighter(true, true);
 		} else
-			throw new RuntimeException("Invalid lighting mode.");
+			throw new AssetLoadingException(file.path(), "Invalid lighting mode.");
 
 		TileMap tileMap = new TileMap(
 			definition.chunkWidth, definition.chunkHeight, definition.chunkDepth,

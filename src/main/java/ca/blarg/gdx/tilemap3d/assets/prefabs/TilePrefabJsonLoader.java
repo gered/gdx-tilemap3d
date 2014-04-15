@@ -1,6 +1,7 @@
 package ca.blarg.gdx.tilemap3d.assets.prefabs;
 
 import ca.blarg.gdx.Strings;
+import ca.blarg.gdx.assets.AssetLoadingException;
 import ca.blarg.gdx.tilemap3d.assets.tilemap.TileDataSerializer;
 import ca.blarg.gdx.tilemap3d.prefabs.TilePrefab;
 import com.badlogic.gdx.assets.AssetManager;
@@ -16,9 +17,9 @@ class TilePrefabJsonLoader {
 		return json.fromJson(JsonTilePrefab.class, file);
 	}
 
-	public static TilePrefab create(JsonTilePrefab definition, AssetManager assetManager) {
+	public static TilePrefab create(FileHandle file, JsonTilePrefab definition, AssetManager assetManager) {
 		if (Strings.isNullOrEmpty(definition.data))
-			throw new RuntimeException("Invalid prefab: no tile data.");
+			throw new AssetLoadingException(file.path(), "No tile data.");
 
 		TilePrefab prefab = new TilePrefab(definition.width, definition.height, definition.depth);
 

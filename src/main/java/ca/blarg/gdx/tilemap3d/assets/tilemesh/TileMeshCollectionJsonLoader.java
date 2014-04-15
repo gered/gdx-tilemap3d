@@ -1,5 +1,6 @@
 package ca.blarg.gdx.tilemap3d.assets.tilemesh;
 
+import ca.blarg.gdx.assets.AssetLoadingException;
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMesh;
 import ca.blarg.gdx.tilemap3d.tilemesh.TileMeshCollection;
@@ -13,11 +14,11 @@ class TileMeshCollectionJsonLoader {
 		return json.fromJson(JsonTileMeshCollection.class, file);
 	}
 
-	public static TileMeshCollection create(JsonTileMeshCollection definition, AssetManager assetManager) {
+	public static TileMeshCollection create(FileHandle file, JsonTileMeshCollection definition, AssetManager assetManager) {
 		if (definition.tiles == null || definition.tiles.size() == 0)
-			throw new RuntimeException("No tiles defined.");
+			throw new AssetLoadingException(file.path(), "No tiles defined.");
 		if (definition.textureAtlas == null)
-			throw new RuntimeException("No texture atlas defined.");
+			throw new AssetLoadingException(file.path(), "No texture atlas defined.");
 
 		TextureAtlas atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
 		TileMeshCollection collection = new TileMeshCollection(atlas);
