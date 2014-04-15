@@ -23,6 +23,7 @@ public class JsonTileMesh {
 	}
 
 	public String materials;
+	public String textureAtlas;
 	public boolean cube;
 	public CubeTextures textures;
 	public int texture;
