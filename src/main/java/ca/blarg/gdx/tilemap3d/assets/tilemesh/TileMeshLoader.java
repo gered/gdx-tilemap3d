@@ -48,7 +48,7 @@ public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLo
 
 	@Override
 	public void loadAsync(AssetManager manager, String fileName, FileHandle file, TileMeshParameters parameter) {
-		mesh = TileMeshJsonLoader.create(definition, manager);
+		mesh = TileMeshJsonLoader.create(file, definition, manager);
 	}
 
 	@Override

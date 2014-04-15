@@ -1,6 +1,7 @@
 package ca.blarg.gdx.tilemap3d.assets.tilemesh;
 
 import ca.blarg.gdx.Bitfield;
+import ca.blarg.gdx.assets.AssetLoadingException;
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
 import ca.blarg.gdx.tilemap3d.tilemesh.*;
 import com.badlogic.gdx.assets.AssetManager;
@@ -17,20 +18,20 @@ class TileMeshJsonLoader {
 		return json.fromJson(JsonTileMesh.class, file);
 	}
 
-	public static TileMesh create(JsonTileMesh definition, AssetManager assetManager) {
+	public static TileMesh create(FileHandle file, JsonTileMesh definition, AssetManager assetManager) {
 		if (!definition.cube && definition.model == null && definition.models == null)
-			throw new RuntimeException("One of cube, model or models must be specified for each tile.");
+			throw new AssetLoadingException(file.path(), "One of cube, model or models must be specified for each tile.");
 		if (definition.textureAtlas == null)
-			throw new RuntimeException("A texture atlas must be specified.");
+			throw new AssetLoadingException(file.path(), "A texture atlas must be specified.");
 		if (definition.collisionModel != null && definition.collisionShape != null)
-			throw new RuntimeException("collisionModel and collisionShape cannot both be set.");
+			throw new AssetLoadingException(file.path(), "collisionModel and collisionShape cannot both be set.");
 
 		TextureAtlas atlas = null;
 		if (definition.textureAtlas != null)
 			atlas = assetManager.get(definition.textureAtlas, TextureAtlas.class);
 
 		if (!atlas.materialTileMapping.hasMappings() && !definition.cube)
-			throw new RuntimeException("No material mappings defined for non-cube tile mesh. Material mappings needed to map from source model(s) textures to texture atlas tiles.");
+			throw new AssetLoadingException(file.path(), "No material mappings defined for non-cube tile mesh. Material mappings needed to map from source model(s) textures to texture atlas tiles.");
 
 		boolean isCube = definition.cube;
 		TextureRegion texture = null;
@@ -100,7 +101,7 @@ class TileMeshJsonLoader {
 			} else if (definition.texture >= 0)
 				texture = atlas.get(definition.texture);
 			else
-				throw new RuntimeException("No cube texture specified.");
+				throw new AssetLoadingException(file.path(), "No cube texture specified.");
 
 			if (definition.faces != null) {
 				if (definition.faces.contains("ALL"))
@@ -137,7 +138,7 @@ class TileMeshJsonLoader {
 			} else if (definition.collisionShape != null) {
 				collisionModel = CollisionShapes.get(definition.collisionShape);
 				if (collisionModel == null)
-					throw new RuntimeException("collisionShape not recognized.");
+					throw new AssetLoadingException(file.path(), "collisionShape not recognized.");
 			}
 
 			return new ModelTileMesh(model, collisionModel, atlas.materialTileMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
@@ -171,12 +172,12 @@ class TileMeshJsonLoader {
 			if (definition.collisionShape != null) {
 				collisionModel = CollisionShapes.get(definition.collisionShape);
 				if (collisionModel == null)
-					throw new RuntimeException("collisionShape not recognized.");
+					throw new AssetLoadingException(file.path(), "collisionShape not recognized.");
 			}
 
 			return new MultiModelTileMesh(submodels, colors, scaleToSizes, positionOffsets, collisionModel, atlas.materialTileMapping, opaqueSides, lightValue, alpha, translucency, color, scaleToSize, positionOffset, collisionPositionOffset);
 
 		} else
-			throw new RuntimeException("Unrecognized tile mesh type.");
+			throw new AssetLoadingException(file.path(), "Unrecognized tile mesh type.");
 	}
 }
