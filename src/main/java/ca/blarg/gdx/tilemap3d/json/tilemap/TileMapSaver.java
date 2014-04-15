@@ -32,6 +32,9 @@ public class TileMapSaver {
 		else if (tileMap.lighter instanceof LightSpreadingTileMapLighter)
 			jsonMap.lightingMode = "skyAndSources";
 
+		jsonMap.ambientLightValue = (int)tileMap.ambientLightValue;
+		jsonMap.skyLightValue = (int)tileMap.skyLightValue;
+
 		// each serialized chunk will be the same size in bytes (same number of tiles in each)
 		int chunkSizeInBytes = tileMap.getChunks()[0].getData().length * TileDataSerializer.TILE_SIZE_BYTES;
 

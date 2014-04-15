@@ -56,6 +56,9 @@ public class TileMapJsonLoader {
 			lighter
 		);
 
+		tileMap.ambientLightValue = (byte)definition.ambientLightValue;
+		tileMap.skyLightValue = (byte)definition.skyLightValue;
+
 		for (int i = 0; i < definition.chunks.size(); ++i) {
 			String encodedChunk = definition.chunks.get(i);
 			TileChunk outputChunk = tileMap.getChunks()[i];
