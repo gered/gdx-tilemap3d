@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class JsonTileMesh {
-	public class CubeTextures {
+	public static class CubeTextures {
 		public int top;
 		public int bottom;
 		public int front;
@@ -15,7 +15,7 @@ public class JsonTileMesh {
 		public int right;
 	}
 
-	public class SubModels {
+	public static class SubModels {
 		public String submodel;
 		public Color color;
 		public Vector3 scaleToSize;
