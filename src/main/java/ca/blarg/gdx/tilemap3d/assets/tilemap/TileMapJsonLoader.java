@@ -2,6 +2,7 @@ package ca.blarg.gdx.tilemap3d.assets.tilemap;
 
 import ca.blarg.gdx.Strings;
 import ca.blarg.gdx.assets.AssetLoadingException;
+import ca.blarg.gdx.assets.AssetLoadingUtils;
 import ca.blarg.gdx.tilemap3d.ChunkVertexGenerator;
 import ca.blarg.gdx.tilemap3d.TileChunk;
 import ca.blarg.gdx.tilemap3d.TileMap;
@@ -20,7 +21,11 @@ import java.nio.ByteBuffer;
 class TileMapJsonLoader {
 	public static JsonTileMap load(FileHandle file) {
 		Json json = new Json();
-		return json.fromJson(JsonTileMap.class, file);
+		JsonTileMap definition = json.fromJson(JsonTileMap.class, file);
+
+		definition.tileMeshes = AssetLoadingUtils.addPathIfNone(definition.tileMeshes, file.parent().path());
+
+		return definition;
 	}
 
 	public static TileMap create(FileHandle file, JsonTileMap definition, AssetManager assetManager) {

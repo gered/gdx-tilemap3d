@@ -2,6 +2,7 @@ package ca.blarg.gdx.tilemap3d.assets.tilemesh;
 
 import ca.blarg.gdx.Bitfield;
 import ca.blarg.gdx.assets.AssetLoadingException;
+import ca.blarg.gdx.assets.AssetLoadingUtils;
 import ca.blarg.gdx.graphics.atlas.TextureAtlas;
 import ca.blarg.gdx.tilemap3d.tilemesh.*;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,7 +16,21 @@ import com.badlogic.gdx.utils.Json;
 class TileMeshJsonLoader {
 	public static JsonTileMesh load(FileHandle file) {
 		Json json = new Json();
-		return json.fromJson(JsonTileMesh.class, file);
+		JsonTileMesh definition = json.fromJson(JsonTileMesh.class, file);
+
+		String path = file.parent().path();
+
+		definition.textureAtlas = AssetLoadingUtils.addPathIfNone(definition.textureAtlas, path);
+		definition.model = AssetLoadingUtils.addPathIfNone(definition.model, path);
+		definition.collisionModel = AssetLoadingUtils.addPathIfNone(definition.collisionModel, path);
+		if (definition.models != null) {
+			for (int i = 0; i < definition.models.size(); ++i) {
+				JsonTileMesh.SubModels subModel = definition.models.get(i);
+				subModel.submodel = AssetLoadingUtils.addPathIfNone(subModel.submodel, path);
+			}
+		}
+
+		return definition;
 	}
 
 	public static TileMesh create(FileHandle file, JsonTileMesh definition, AssetManager assetManager) {
