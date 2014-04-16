@@ -7,6 +7,7 @@ public class TileMapUpdater implements Runnable {
 	TileChunk chunkNeedingVboCreation;
 	float progress;
 	boolean isRunning;
+	boolean needToStop;
 
 	public TileMapUpdater(TileMap tileMap) {
 		this.tileMap = tileMap;
@@ -32,14 +33,17 @@ public class TileMapUpdater implements Runnable {
 		waitingForVboCreation = false;
 	}
 
+	public synchronized void signalStop() { needToStop = true; }
+
 	@Override
 	public void run() {
 		isRunning = true;
 		chunkNeedingVboCreation = null;
+		needToStop = false;
 
 		TileChunk[] chunks = tileMap.getChunks();
 
-		for (int i = 0; i < tileMap.chunks.length; ++i) {
+		for (int i = 0; (i < tileMap.chunks.length && !needToStop); ++i) {
 			progress = (float)i / (float)(chunks.length - 1);
 
 			TileChunk chunk = chunks[i];

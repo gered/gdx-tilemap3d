@@ -15,6 +15,7 @@ public class TileMap extends TileContainer implements Disposable {
 	final Vector3 tmpPosition = new Vector3();
 
 	TileMapUpdater updater;
+	Thread updaterThread;
 
 	public final int chunkWidth;
 	public final int chunkHeight;
@@ -149,6 +150,7 @@ public class TileMap extends TileContainer implements Disposable {
 		bounds.max.set(getWidth(), getHeight(), getDepth());
 
 		updater = new TileMapUpdater(this);
+		updaterThread = null;
 	}
 
 	public void updateVertices() {
@@ -160,7 +162,8 @@ public class TileMap extends TileContainer implements Disposable {
 		if (isUpdating())
 			throw new IllegalStateException("Async vertices update for this TileMap is currently underway.");
 
-		(new Thread(updater)).start();
+		updaterThread = new Thread(updater);
+		updaterThread.start();
 	}
 
 	public boolean updateVerticesAsync() {
@@ -294,6 +297,7 @@ public class TileMap extends TileContainer implements Disposable {
 
 	@Override
 	public void dispose() {
+		updater.signalStop();
 		for (int i = 0; i < chunks.length; ++i)
 			chunks[i].dispose();
 	}
