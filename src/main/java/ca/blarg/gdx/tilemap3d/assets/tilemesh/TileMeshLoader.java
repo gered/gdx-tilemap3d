@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 @SuppressWarnings("unchecked")
 public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLoader.TileMeshParameters> {
 	public static class TileMeshParameters extends AssetLoaderParameters<TileMesh> {
+		public String defaultTextureAtlas;
 	}
 
 	public TileMeshLoader(FileHandleResolver resolver) {
@@ -30,6 +31,10 @@ public class TileMeshLoader extends AsynchronousAssetLoader<TileMesh, TileMeshLo
 
 		if (definition.textureAtlas != null)
 			deps.add(new AssetDescriptor(definition.textureAtlas, TextureAtlas.class));
+		else if (parameter != null && parameter.defaultTextureAtlas != null) {
+			definition.textureAtlas = parameter.defaultTextureAtlas;
+			deps.add(new AssetDescriptor(definition.textureAtlas, TextureAtlas.class));
+		}
 
 		if (!definition.cube) {
 			if (definition.model != null)

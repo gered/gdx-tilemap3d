@@ -31,8 +31,11 @@ public class TileMeshCollectionLoader extends AsynchronousAssetLoader<TileMeshCo
 		if (definition.textureAtlas != null)
 			deps.add(new AssetDescriptor(definition.textureAtlas, TextureAtlas.class));
 
+		TileMeshLoader.TileMeshParameters params = new TileMeshLoader.TileMeshParameters();
+		params.defaultTextureAtlas = definition.textureAtlas;
+
 		for (String tileMeshFile : definition.tiles) {
-			deps.add(new AssetDescriptor(tileMeshFile, TileMesh.class));
+			deps.add(new AssetDescriptor(tileMeshFile, TileMesh.class, params));
 		}
 
 		return deps;
