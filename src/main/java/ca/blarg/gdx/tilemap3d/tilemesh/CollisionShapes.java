@@ -11,7 +11,10 @@ public class CollisionShapes {
 	static final ModelBuilder modelBuilder = new ModelBuilder();
 	static final ObjectMap<String, Model> shapes = new ObjectMap<String, Model>();
 
-	static {
+	public static void init() {
+		if (shapes.size > 0)
+			throw new IllegalStateException("Collision shapes have already been initialized.");
+
 		shapes.put("cube-1x1x1", buildBox(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f));
 		shapes.put("cube-2x2x2", buildBox(-0.5f, -0.5f, -0.5f, 1.5f, 1.5f, 1.5f));
 		shapes.put("cube-3x3x3", buildBox(-0.5f, -0.5f, -0.5f, 2.5f, 2.5f, 2.5f));
