@@ -13,7 +13,7 @@ public class CollisionShapes {
 
 	public static void init() {
 		if (shapes.size > 0)
-			throw new IllegalStateException("Collision shapes have already been initialized.");
+			return;
 
 		shapes.put("cube-1x1x1", buildBox(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f));
 		shapes.put("cube-2x2x2", buildBox(-0.5f, -0.5f, -0.5f, 1.5f, 1.5f, 1.5f));
