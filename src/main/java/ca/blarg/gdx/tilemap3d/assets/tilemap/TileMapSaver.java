@@ -14,6 +14,10 @@ import java.util.ArrayList;
 
 public class TileMapSaver {
 	public static void save(TileMap tileMap, String outputFilename) {
+		save(tileMap, null, outputFilename);
+	}
+
+	public static void save(TileMap tileMap, String tileMeshCollectionFilename, String outputFilename) {
 		if (tileMap == null)
 			throw new IllegalArgumentException();
 
@@ -24,6 +28,7 @@ public class TileMapSaver {
 		jsonMap.widthInChunks = tileMap.getWidth() / jsonMap.chunkWidth;
 		jsonMap.heightInChunks = tileMap.getHeight() / jsonMap.chunkHeight;
 		jsonMap.depthInChunks = tileMap.getDepth() / jsonMap.chunkDepth;
+		jsonMap.tileMeshes = tileMeshCollectionFilename;
 
 		if (tileMap.lighter == null)
 			jsonMap.lightingMode = null;
