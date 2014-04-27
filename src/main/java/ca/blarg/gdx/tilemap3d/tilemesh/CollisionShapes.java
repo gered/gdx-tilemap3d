@@ -1,6 +1,6 @@
 package ca.blarg.gdx.tilemap3d.tilemesh;
 
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
@@ -50,14 +50,14 @@ public class CollisionShapes {
 
 	private static Model buildBox(float ax, float ay, float az, float bx, float by, float bz) {
 		modelBuilder.begin();
-		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL10.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
+		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL20.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
 		addBoxShape(partBuilder, ax, ay, az, bx, by, bz);
 		return modelBuilder.end();
 	}
 
 	private static Model buildRamp(float ax, float ay, float az, float bx, float by, float bz) {
 		modelBuilder.begin();
-		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL10.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
+		MeshPartBuilder partBuilder = modelBuilder.part("collisionShape", GL20.GL_TRIANGLES, VertexAttributes.Usage.Position, null);
 		addRampShape(partBuilder, ax, ay, az, bx, by, bz);
 		return modelBuilder.end();
 	}
