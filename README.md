@@ -11,7 +11,7 @@ at runtime to arrive at a final Tile model mesh.
 <dependency>
     <groupId>ca.blarg.gdx</groupId>
     <artifactId>gdx-tilemap3d</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
 </dependency>
 ```
 
