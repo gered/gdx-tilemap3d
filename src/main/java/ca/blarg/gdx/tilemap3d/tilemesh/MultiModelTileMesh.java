@@ -85,6 +85,7 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 
 		bounds = new BoundingBox();
 		BoundingBox tmpBounds = new BoundingBox();
+		Vector3 tmpDimensions = new Vector3();
 
 		// collect the vertices from each of the models provided
 		for (int i = 0; i < models.length; ++i) {
@@ -102,11 +103,12 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 			Vector3 scaleFactor = new Vector3();
 
 			submodel.calculateBoundingBox(tmpBounds);
+			tmpBounds.getDimensions(tmpDimensions);
 			if (scaleToSize != null) {
-				MathHelpers.getScaleFactor(tmpBounds.getDimensions(), scaleToSize, scaleFactor);
+				MathHelpers.getScaleFactor(tmpDimensions, scaleToSize, scaleFactor);
 				submodelBounds.set(Vector3.Zero, scaleToSize);
 			} else {
-				submodelBounds.set(Vector3.Zero, tmpBounds.getDimensions());
+				submodelBounds.set(Vector3.Zero, tmpDimensions);
 				scaleFactor.set(1.0f, 1.0f, 1.0f);
 			}
 			bounds.ext(submodelBounds);
@@ -119,11 +121,12 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 
 		// figure out what the final scaled bounds and scale factor will be
 		Vector3 scaleFactor = new Vector3();
+		bounds.getDimensions(tmpDimensions);
 		if (scaleToSize != null) {
-			MathHelpers.getScaleFactor(bounds.getDimensions(), scaleToSize, scaleFactor);
+			MathHelpers.getScaleFactor(tmpDimensions, scaleToSize, scaleFactor);
 			bounds = new BoundingBox().set(Vector3.Zero, scaleToSize);
 		} else {
-			bounds = new BoundingBox().set(Vector3.Zero, bounds.getDimensions());
+			bounds = new BoundingBox().set(Vector3.Zero, tmpDimensions);
 			scaleFactor.set(1.0f, 1.0f, 1.0f);
 		}
 
@@ -140,11 +143,12 @@ public class MultiModelTileMesh extends BaseModelTileMesh {
 	private void setupCollisionVertices(Model collisionModel) {
 		if (collisionModel != null) {
 			BoundingBox tmpBounds = new BoundingBox();
+			Vector3 tmpDimensions = new Vector3();
 			Vector3 scaleFactor = new Vector3();
 
 			if (scaleToSize != null) {
 				collisionModel.calculateBoundingBox(tmpBounds);
-				MathHelpers.getScaleFactor(tmpBounds.getDimensions(), scaleToSize, scaleFactor);
+				MathHelpers.getScaleFactor(tmpDimensions, scaleToSize, scaleFactor);
 			} else
 				scaleFactor.set(1.0f, 1.0f, 1.0f);
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class ModelTileMesh extends BaseModelTileMesh {
 	static final Vector3 tmpPosition = new Vector3();
 	static final Vector3 tmpNormal = new Vector3();
+	static final Vector3 tmpDimensions = new Vector3();
 	static final BoundingBox tmpModelBounds = new BoundingBox();
 	static final Vector3 tmpScaleFactor = new Vector3();
 
@@ -74,11 +75,12 @@ public class ModelTileMesh extends BaseModelTileMesh {
 		);
 
 		model.calculateBoundingBox(tmpModelBounds);
+		tmpModelBounds.getDimensions(tmpDimensions);
 		if (scaleToSize != null) {
-			MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
+			MathHelpers.getScaleFactor(tmpDimensions, scaleToSize, tmpScaleFactor);
 			bounds = new BoundingBox().set(Vector3.Zero, scaleToSize);
 		} else {
-			bounds = new BoundingBox().set(Vector3.Zero, tmpModelBounds.getDimensions());
+			bounds = new BoundingBox().set(Vector3.Zero, tmpDimensions);
 			tmpScaleFactor.set(1.0f, 1.0f, 1.0f);
 		}
 
@@ -89,7 +91,8 @@ public class ModelTileMesh extends BaseModelTileMesh {
 	private void setupCollisionVertices(Model collisionModel) {
 		if (scaleToSize != null) {
 			collisionModel.calculateBoundingBox(tmpModelBounds);
-			MathHelpers.getScaleFactor(tmpModelBounds.getDimensions(), scaleToSize, tmpScaleFactor);
+			tmpModelBounds.getDimensions(tmpDimensions);
+			MathHelpers.getScaleFactor(tmpDimensions, scaleToSize, tmpScaleFactor);
 		} else
 			tmpScaleFactor.set(1.0f, 1.0f, 1.0f);
 

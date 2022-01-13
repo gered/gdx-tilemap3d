@@ -22,6 +22,7 @@ import java.nio.ShortBuffer;
 public abstract class BaseModelTileMesh extends TileMesh {
 	private final Vector3 tmpPosition = new Vector3();
 	private final Vector3 tmpNormal = new Vector3();
+	private final Vector3 tmpDimensions = new Vector3();
 	private final BoundingBox tmpBounds = new BoundingBox();
 
 	public BaseModelTileMesh(byte opaqueSides, boolean alpha, float translucency, byte lightValue, Color color) {
@@ -54,7 +55,7 @@ public abstract class BaseModelTileMesh extends TileMesh {
 				destVertices.setPos(tmpPosition);
 				offset += 3;
 
-				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.Color) != null) {
+				if (meshPart.mesh.getVertexAttribute(VertexAttributes.Usage.ColorUnpacked) != null) {
 					// TODO: blend mesh color and source model color somehow?
 					destVertices.setCol(vertices.get(offset), vertices.get(offset + 1), vertices.get(offset + 2), vertices.get(offset + 3));
 					offset += 4;
@@ -84,8 +85,8 @@ public abstract class BaseModelTileMesh extends TileMesh {
 			}
 		}
 
-		for (int i = 0; i < node.children.size; ++i)
-			collectModelNodeVertices(node.children.get(i), destVertices, textures, color, scaleFactor, positionOffset);
+		for (int i = 0; i < node.getChildCount(); ++i)
+			collectModelNodeVertices(node.getChild(i), destVertices, textures, color, scaleFactor, positionOffset);
 	}
 
 	protected void collectModelNodeVertexPositions(Node node, Array<Vector3> destVertices, Vector3 scaleFactor, Vector3 positionOffset) {
@@ -110,13 +111,14 @@ public abstract class BaseModelTileMesh extends TileMesh {
 			}
 		}
 
-		for (int i = 0; i < node.children.size; ++i)
-			collectModelNodeVertexPositions(node.children.get(i), destVertices, scaleFactor, positionOffset);
+		for (int i = 0; i < node.getChildCount(); ++i)
+			collectModelNodeVertexPositions(node.getChild(i), destVertices, scaleFactor, positionOffset);
 	}
 
 	protected void getScaleFactorForModel(Model model, Vector3 scaleToSize, Vector3 out) {
 		model.calculateBoundingBox(tmpBounds);
-		MathHelpers.getScaleFactor(tmpBounds.getDimensions(), scaleToSize, out);
+		tmpBounds.getDimensions(tmpDimensions);
+		MathHelpers.getScaleFactor(tmpDimensions, scaleToSize, out);
 	}
 
 	protected int countModelVertices(Model model) {

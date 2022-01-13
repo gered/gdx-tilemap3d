@@ -48,8 +48,8 @@
 		<maven.compiler.target>1.6</maven.compiler.target>
 		<maven.compiler.source>1.6</maven.compiler.source>
 
-		<gdx.version>1.0.0</gdx.version>
-		<gdx-toolbox.version>0.1</gdx-toolbox.version>
+		<gdx.version>1.7.0</gdx.version>
+		<gdx-toolbox.version>0.2-SNAPSHOT</gdx-toolbox.version>
 	</properties>
 
 	<dependencies>

@@ -41,13 +41,13 @@ public class ChunkVertexGenerator {
 
 		builder.begin(
 			VertexAttributes.Usage.Position |
-			VertexAttributes.Usage.Color |
+			VertexAttributes.Usage.ColorUnpacked |
 			VertexAttributes.Usage.Normal |
 			VertexAttributes.Usage.TextureCoordinates
 		);
 		alphaBuilder.begin(
 			VertexAttributes.Usage.Position |
-			VertexAttributes.Usage.Color |
+			VertexAttributes.Usage.ColorUnpacked |
 			VertexAttributes.Usage.Normal |
 			VertexAttributes.Usage.TextureCoordinates
 		);
